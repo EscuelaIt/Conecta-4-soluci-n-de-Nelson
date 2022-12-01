@@ -26,6 +26,16 @@ export class GameController {
             }
         )
     }
+    getNumberOfPlayers() {
+        UserIOController.getInstance().dragGetNumberOfPlayers()
+    }
+
+    setNumberOfPlayers(players) {
+        this.#boardView.build()
+        this.#player = players
+        this.#playGame()
+        UserIOController.getInstance().removeModal()
+    }
 
     paintColors() {
         this.#game.getGrid().forEach((row, rowNum) => {
@@ -43,11 +53,8 @@ export class GameController {
 
     #playGame() {
         this.#turnController.resetPlayers(this.#player)
-        let color = this.#game.getActivePlayer().getColor();
-        UserIOController.getInstance().writeMessage(
-            'turn',
-            color
-        )
+        let color = this.#game.getActivePlayer().getColor()
+        UserIOController.getInstance().writeMessage('turn', color)
 
         UserIOController.getInstance().writeMessage(
             'boardMessages',
@@ -60,6 +67,10 @@ export class GameController {
             'turnLabel',
             `Current Turn:&nbsp;`
         )
+        if (this.#player === 0) {
+            this.#boardView.removeControls()
+            setTimeout(() => this.dropToken(), 300)
+        }
     }
 
     dropToken(column) {
@@ -75,18 +86,25 @@ export class GameController {
                 this.#game.getActivePlayer().getColor().toString()
             )
             this.paintColors()
+            this.machineActions()
         }
     }
 
-    getNumberOfPlayers() {
-        UserIOController.getInstance().dragGetNumberOfPlayers()
-    }
+    machineActions() {
+        if (this.#player === 0) {
+            setTimeout(() => this.dropToken(), 300)
+        }
 
-    setNumberOfPlayers(players) {
-        this.#boardView.build()
-        this.#player = players
-        this.#playGame()
-        UserIOController.getInstance().removeModal()
+        if (
+            this.#player === 1 &&
+            this.#game.getActivePlayer().getColor().toString() === 'Yellow'
+        ) {
+            this.#boardView.removeControls()
+            setTimeout(() => {
+                this.dropToken()
+                this.#boardView.buildControls()
+            }, 300)
+        }
     }
 }
 let connect4Controller = new GameController()
