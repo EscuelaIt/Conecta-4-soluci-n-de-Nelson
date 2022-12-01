@@ -1,0 +1,96 @@
+:root {
+    --th-background-color: Red;
+}
+.connect4 {
+    margin: auto;
+    background: aqua;
+    width: 400px;
+    height: 300px;
+    border-collapse: separate;
+    border-spacing: 10px;
+    border-radius: 10px;
+    box-shadow: 2px 1px 1px 1px black;
+}
+
+.connect4 td {
+    background: #0c1621;
+    border-radius: 100%;
+    min-width: 10px;
+    min-height: 10px;
+    box-shadow: 2px 1px 1px 1px black inset;
+}
+.connect4 th {
+    background: #0c1621;
+    cursor: pointer;
+    border-radius: 0px 0px 100% 100%;
+    min-width: 10px;
+    min-height: 10px;
+    box-shadow: 2px 1px 1px 1px black inset;
+}
+.connect4 th:hover {
+    background: var(--th-background-color);
+}
+.modalContainer {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    background: rgba(0, 0, 0, 0.7);
+}
+.dialogModal {
+    width: 300px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 20%;
+    text-align: center;
+    box-shadow: 2px 1px 1px 1px black;
+    border-radius: 10px;
+    background: #3a445e;
+}
+.dialogModal #modalTitle {
+    padding: 10px;
+}
+.dialogModal #modalBody {
+    padding: 10px;
+}
+.dialogModal #modalBody > button {
+    padding: 10px;
+    margin: 10px;
+    background: #0c1621;
+    color: white;
+    font-size: 12px;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+.board {
+    position: relative;
+}
+
+body {
+    color: aliceblue;
+    background: #0c1621;
+    height: 100%;
+    width: 100%;
+}
+
+.turn {
+    margin: fill;
+    padding: 10px;
+    display: flex;
+}
+
+.boardTitle {
+    text-align: center;
+    padding: 10px;
+    font-size: 20px;
+    align-content: center;
+}
+
+.boardMessages {
+    text-align: center;
+    padding: 10px;
+    font-size: 18px;
+    align-content: center;
+}
