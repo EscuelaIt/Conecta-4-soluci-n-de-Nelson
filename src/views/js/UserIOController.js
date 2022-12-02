@@ -1,4 +1,5 @@
 import { EventController } from './EventController.js'
+import { BoardUiBuilder } from './BoardUiBuilder.js'
 
 export class UserIOController {
     static TITLE = `--HTML, CSS and Javascript Connect4--`
@@ -7,6 +8,17 @@ export class UserIOController {
     static PLAYER_WIN = `#color has won this game!`
     static PLAYERS_TIED = `Draw!`
 
+    #grid = [
+        [0, 1, 2, 3, 4, 5, 6],
+        [0, 1, 2, 3, 4, 5, 6],
+        [0, 1, 2, 3, 4, 5, 6],
+        [0, 1, 2, 3, 4, 5, 6],
+        [0, 1, 2, 3, 4, 5, 6],
+        [0, 1, 2, 3, 4, 5, 6],
+    ]
+
+    #boardUiBuilder = new BoardUiBuilder(this.#grid)
+
     static instance
 
     static getInstance() {
@@ -14,6 +26,28 @@ export class UserIOController {
             this.instance = new UserIOController()
         }
         return this.instance
+    }
+
+    buildBoardControls() {
+        this.#boardUiBuilder.buildControls()
+    }
+
+    removeBoardControls() {
+        this.#boardUiBuilder.removeControls()
+    }
+
+    buildBoard() {
+        this.#boardUiBuilder.build()
+    }
+
+    paintBoardColors(grid) {
+        grid.forEach((row, rowNum) => {
+            row.forEach((cell, celNum) => {
+                document.getElementById(
+                    `${rowNum}-${celNum}`
+                ).style.background = cell.toString()
+            })
+        })
     }
 
     writeMessage(elementId = '', message = '') {
