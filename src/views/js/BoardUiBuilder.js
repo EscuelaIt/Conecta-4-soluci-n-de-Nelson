@@ -1,7 +1,7 @@
 import { UserIOController } from './UserIOController.js'
 import { EventController } from './EventController.js'
 
-export class BoardController {
+export class BoardUiBuilder {
     #boardContainer = document.getElementById('board')
     #tableElement = document.createElement('table')
 
@@ -18,54 +18,33 @@ export class BoardController {
     build() {
         this.#tableElement.remove()
         this.#tableElement = document.createElement('table')
-
         UserIOController.getInstance().writeMessage(
             'BoardTitle',
             UserIOController.TITLE
         )
 
-        let connect4TableRows = []
-        this.#tableElement.classList.add(this.#styleClasses.connect4)
+        this.#addTableHead()
 
-        for (let i = 0; i < 7; i++) {
-            connect4TableRows.push(this.#addNewTableRow(this.#tableElement, i))
-        }
+        let rowNum = 5
+        let celNum = 0
 
-        connect4TableRows.reverse().forEach((row, key) => {
-            if (key < 6) {
-                for (let i = 0; i < 7; i++) {
-                    this.#addNewTableCell(row, i, key)
+        this.#grid.forEach((row) => {
+            let rowElement = this.#addNewTableRow(this.#tableElement, rowNum)
+            row.forEach((cell) => {
+                if (celNum > 6) {
+                    celNum = 0
                 }
-            }
+                this.#addNewTableCell(rowElement, rowNum, celNum)
+                celNum++
+            })
+            rowNum--
         })
 
-        for (let i = 0; i < 7; i++) {
-            this.#addNewTableHead(connect4TableRows[6], i)
-        }
-
+        this.#tableElement.classList.add(this.#styleClasses.connect4)
         this.#boardContainer.append(this.#tableElement)
         this.buildControls()
     }
 
-    #addNewTableHead(trElement, itemNum) {
-        let newCol = document.createElement('th')
-        newCol.id = `head${itemNum}`
-        trElement.append(newCol)
-        return newCol
-    }
-
-    removeControls() {
-        let newRow = document.createElement('tr')
-        newRow.id = `0`
-
-        for (let i = 0; i < 7; i++) {
-            let newCol = document.createElement('th')
-            newCol.id = `head${i}`
-            newRow.append(newCol)
-        }
-
-        this.#tableElement.childNodes[0].replaceWith(newRow)
-    }
     buildControls() {
         this.#tableElement.childNodes[0].childNodes.forEach(
             (controller, itemNum) => {
@@ -78,6 +57,27 @@ export class BoardController {
             }
         )
     }
+
+    removeControls() {
+        let newRow = document.createElement('tr')
+        newRow.id = `6`
+
+        for (let i = 0; i < 7; i++) {
+            let newCol = document.createElement('th')
+            newCol.id = `Column-${i}-Controll`
+            newRow.append(newCol)
+        }
+
+        this.#tableElement.childNodes[0].replaceWith(newRow)
+    }
+    #addTableHead() {
+        let tableHeadElement = this.#addNewTableRow(this.#tableElement, 6)
+        for (let i = 0; i < 7; i++) {
+            let newCol = document.createElement('th')
+            newCol.id = `Column-${i}-Controll`
+            tableHeadElement.append(newCol)
+        }
+    }
     #addNewTableRow(table, itemNum) {
         let newRow = document.createElement('tr')
         newRow.id = itemNum
@@ -85,7 +85,7 @@ export class BoardController {
         return newRow
     }
 
-    #addNewTableCell(trElement, celNum, rowNum) {
+    #addNewTableCell(trElement, rowNum, celNum) {
         let newCell = document.createElement('td')
         newCell.id = `${rowNum}-${celNum}`
         trElement.append(newCell)

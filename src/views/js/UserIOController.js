@@ -62,29 +62,6 @@ export class UserIOController {
         modalBody.append(MachineVsMachineButton)
     }
 
-    #dragModalDialog() {
-        let body = document.getElementById('body')
-        let modalContainer = document.createElement('div')
-        modalContainer.id = 'modalContainer'
-        modalContainer.classList.add('modalContainer')
-        let { modal } = this.#getModalContent()
-        modalContainer.append(modal)
-        body.append(modalContainer)
-    }
-
-    #getModalContent() {
-        let modal = document.createElement('div')
-        modal.id = 'dialogModal'
-        let modalTitle = document.createElement('div')
-        modalTitle.id = `modalTitle`
-        let modalBody = document.createElement('div')
-        modalBody.id = `modalBody`
-        modal.append(modalTitle)
-        modal.append(modalBody)
-        modal.classList.add('dialogModal')
-        return { modal, modalTitle, modalBody }
-    }
-
     dragPlayAgainDialog() {
         let body = document.getElementById('boardMessages')
         let modalContainer = document.createElement('div')
@@ -116,5 +93,28 @@ export class UserIOController {
 
     removeModal() {
         document.getElementById('modalContainer').remove()
+    }
+
+    #dragModalDialog() {
+        let body = document.getElementById('body')
+        let modalContainer = document.createElement('div')
+        modalContainer.id = 'modalContainer'
+        modalContainer.classList.add('modalContainer')
+        let { modal } = this.#getModalContent()
+        modalContainer.append(modal)
+        body.append(modalContainer)
+    }
+
+    #getModalContent() {
+        let modal = document.createElement('div')
+        modal.id = 'dialogModal'
+        let modalTitle = document.createElement('div')
+        modalTitle.id = `modalTitle`
+        let modalBody = document.createElement('div')
+        modalBody.id = `modalBody`
+        modal.append(modalTitle)
+        modal.append(modalBody)
+        modal.classList.add('dialogModal')
+        return { modal, modalTitle, modalBody }
     }
 }

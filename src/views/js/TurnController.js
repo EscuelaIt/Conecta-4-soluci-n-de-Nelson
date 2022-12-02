@@ -27,19 +27,6 @@ export class TurnController {
         this.#game.reset(userPlayers)
     }
 
-    #changeTurn() {
-        this.#game.next();
-        const color = this.#game.getActivePlayer().getColor();
-        UserIOController.getInstance().setControlColor(color);
-        UserIOController.getInstance().writeMessage(
-            'boardMessages',
-            `Hey <b style="color: ${color}">#color</b> Drop your Token in a Column`.replace(
-                `#color`,
-                color
-            )
-        )
-    }
-
     dropToken(col) {
         this.#col = col
         this.#game.getActivePlayer().accept(this)
@@ -68,5 +55,18 @@ export class TurnController {
                 UserIOController.PLAYERS_TIED
             )
         }
+    }
+
+    #changeTurn() {
+        this.#game.next()
+        const color = this.#game.getActivePlayer().getColor()
+        UserIOController.getInstance().setControlColor(color)
+        UserIOController.getInstance().writeMessage(
+            'boardMessages',
+            `Hey <b style="color: ${color}">#color</b> Drop your Token in a Column`.replace(
+                `#color`,
+                color
+            )
+        )
     }
 }

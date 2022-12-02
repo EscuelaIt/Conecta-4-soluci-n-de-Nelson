@@ -1,12 +1,12 @@
 import { Game } from '../../models/Game.js'
 import { UserIOController } from './UserIOController.js'
 import { TurnController } from './TurnController.js'
-import { BoardController } from './BoardController.js'
+import { BoardUiBuilder } from './BoardUiBuilder.js'
 import { EventController } from './EventController.js'
 
-export class GameController {
+export class Connect4 {
     #game = new Game()
-    #boardView = new BoardController(this.#game.getGrid())
+    #boardUiBuilder = new BoardUiBuilder(this.#game.getGrid())
     #turnController = new TurnController(this.#game)
 
     #player = 0
@@ -31,7 +31,7 @@ export class GameController {
     }
 
     setNumberOfPlayers(players) {
-        this.#boardView.build()
+        this.#boardUiBuilder.build()
         this.#player = players
         this.#playGame()
         UserIOController.getInstance().removeModal()
@@ -68,7 +68,7 @@ export class GameController {
             `Current Turn:&nbsp;`
         )
         if (this.#player === 0) {
-            this.#boardView.removeControls()
+            this.#boardUiBuilder.removeControls()
             setTimeout(() => this.dropToken(), 300)
         }
     }
@@ -77,7 +77,7 @@ export class GameController {
         this.#turnController.dropToken(column)
         if (this.isFinished()) {
             this.#turnController.writeResult()
-            this.#boardView.removeControls()
+            this.#boardUiBuilder.removeControls()
             UserIOController.getInstance().dragPlayAgainDialog()
             this.paintColors()
         } else {
@@ -99,13 +99,13 @@ export class GameController {
             this.#player === 1 &&
             this.#game.getActivePlayer().getColor().toString() === 'Yellow'
         ) {
-            this.#boardView.removeControls()
+            this.#boardUiBuilder.removeControls()
             setTimeout(() => {
                 this.dropToken()
-                this.#boardView.buildControls()
+                this.#boardUiBuilder.buildControls()
             }, 300)
         }
     }
 }
-let connect4Controller = new GameController()
+let connect4Controller = new Connect4()
 connect4Controller.getNumberOfPlayers()
