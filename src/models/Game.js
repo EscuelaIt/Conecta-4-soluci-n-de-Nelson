@@ -1,51 +1,56 @@
-import { Board } from './Board.js';
-import { Turn } from './Turn.js';
+import { Board } from './Board.js'
+import { Turn } from './Turn.js'
 
 export class Game {
+    #board
+    #turn
 
-    #board;
-    #turn;
+    #numOfPlayers = 0
 
     constructor() {
-        this.#board = new Board();
-        this.#turn = new Turn(this.#board);
+        this.#board = new Board()
+        this.#turn = new Turn(this.#board)
     }
 
-    getGrid(){
-        return this.#board.getGrid();
+    getGrid() {
+        return this.#board.getGrid()
     }
 
     reset(userPlayers) {
-        this.#board.reset();
-        this.#turn.reset(userPlayers);
+        this.#numOfPlayers = userPlayers
+        this.#board.reset()
+        this.#turn.reset(userPlayers)
     }
 
-    getColor(coordinate){
-        return this.#board.getColor(coordinate);
+    getColor(coordinate) {
+        return this.#board.getColor(coordinate)
     }
 
     isComplete() {
-        return this.#board.isComplete();
+        return this.#board.isComplete()
     }
 
     isWinner() {
-        return this.#board.isWinner();
+        return this.#board.isWinner()
     }
 
     isFinished() {
-        return this.#board.isFinished();
+        return this.#board.isFinished()
     }
 
-    getActivePlayer(){
-        return this.#turn.getActivePlayer();
+    getNumOfPlayers() {
+        return this.#numOfPlayers
     }
 
-    getActiveColor(){
-        return this.getActivePlayer().getColor();
+    getActivePlayer() {
+        return this.#turn.getActivePlayer()
     }
 
-    next(){
-        this.#turn.next();
+    getActiveColor() {
+        return this.getActivePlayer().getColor()
     }
 
+    next() {
+        this.#turn.next()
+    }
 }
