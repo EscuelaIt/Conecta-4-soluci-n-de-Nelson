@@ -35,6 +35,18 @@ export class TurnView {
     new MachinePlayerView(machinePlayer).dropToken()
   }
 
+  #isFinished() {
+    if (UserUiView.getInstance().isFinished()) {
+      UserUiView.getInstance().removeBoardControls()
+      UserUiView.getInstance().drawResult(
+          this.#turn.getActivePlayer().getColor().toString()
+      )
+      UserUiView.getInstance().drawPlayAgainDialog()
+    } else {
+      this.machinePlayHandler()
+    }
+  }
+
   machinePlayHandler() {
     if (
       this.#turn.getNumOfPlayers() === 0 ||
@@ -50,17 +62,5 @@ export class TurnView {
     UserUiView.getInstance().setTurnMessages(
       this.#turn.getActivePlayer().getColor().toString()
     )
-  }
-
-  #isFinished() {
-    if (UserUiView.getInstance().isFinished()) {
-      UserUiView.getInstance().removeBoardControls()
-      UserUiView.getInstance().drawResult(
-        this.#turn.getActivePlayer().getColor().toString()
-      )
-      UserUiView.getInstance().drawPlayAgainDialog()
-    } else {
-      this.machinePlayHandler()
-    }
   }
 }

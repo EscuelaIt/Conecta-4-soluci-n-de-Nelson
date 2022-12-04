@@ -17,7 +17,7 @@ export class UserUiView {
 
     let modalContainer = document.createElement('div')
     modalContainer.id = 'modalContainer'
-    let { modal, modalBody } = this.#getModalContent()
+    let { modal } = this.#getModalContent()
 
     let playerVsPlayerButton = document.createElement('button')
     playerVsPlayerButton.innerText = `Player\nVS\nPlayer`
@@ -49,9 +49,9 @@ export class UserUiView {
       )
     })
 
-    modalBody.append(playerVsPlayerButton)
-    modalBody.append(playerVsMachineButton)
-    modalBody.append(MachineVsMachineButton)
+    modal.append(playerVsPlayerButton)
+    modal.append(playerVsMachineButton)
+    modal.append(MachineVsMachineButton)
     modalContainer.append(modal)
     container.append(modalContainer)
   }
@@ -80,19 +80,20 @@ export class UserUiView {
     })
   }
 
-  drawWinnerMessage(color) {
+  drawResult(color) {
+    if (this.#boardView.isWinner()) {
+      this.#drawWinnerMessage(color)
+    } else {
+      this.drawMessage('boardMessages', 'Draw!')
+    }
+  }
+
+  #drawWinnerMessage(color) {
     document.getElementById(
       'boardMessages'
     ).innerHTML = `<b style='color: ${color}'>${color}</b> Has won the game!`
   }
 
-  drawResult(color) {
-    if (this.#boardView.isWinner()) {
-      this.drawWinnerMessage(color)
-    } else {
-      this.drawMessage('boardMessages', 'Draw!')
-    }
-  }
   isFinished() {
     return this.#boardView.isFinished()
   }
@@ -105,7 +106,7 @@ export class UserUiView {
     let container = document.getElementById('boardMessages')
     let modalContainer = document.createElement('div')
     modalContainer.id = 'modalContainer'
-    let { modal, modalBody } = this.#getModalContent()
+    let { modal } = this.#getModalContent()
     let yesButton = document.createElement('button')
     yesButton.innerText = `Pay again!`
     yesButton.addEventListener(
@@ -117,7 +118,7 @@ export class UserUiView {
       },
       false
     )
-    modalBody.append(yesButton)
+    modal.append(yesButton)
     modalContainer.append(modal)
     container.append(modalContainer)
   }
@@ -125,10 +126,7 @@ export class UserUiView {
   #getModalContent() {
     let modal = document.createElement('div')
     modal.id = 'dialogModal'
-    let modalBody = document.createElement('div')
-    modalBody.id = `modalBody`
-    modal.append(modalBody)
     modal.classList.add('dialogModal')
-    return { modal, modalBody }
+    return { modal }
   }
 }

@@ -2,6 +2,26 @@
   --th-background-color: Red;
 }
 
+body {
+  color: aliceblue;
+  background: #0c1621;
+  height: 100%;
+  width: 100%;
+}
+
+.boardTitle {
+  text-align: center;
+  padding: 10px;
+  align-content: center;
+}
+
+.boardMessages {
+  text-align: center;
+  padding: 10px;
+  font-size: 18px;
+  align-content: center;
+}
+
 .board {
   position: relative;
 }
@@ -46,13 +66,8 @@
   border-radius: 10px;
   background: #3a445e;
 }
-.dialogModal #modalTitle {
-  padding: 10px;
-}
-.dialogModal #modalBody {
-  padding: 10px;
-}
-.dialogModal #modalBody > button {
+
+.dialogModal button {
   padding: 10px;
   margin: 10px;
   background: #0c1621;
@@ -60,30 +75,4 @@
   font-size: 12px;
   border-radius: 8px;
   font-weight: bold;
-}
-
-body {
-  color: aliceblue;
-  background: #0c1621;
-  height: 100%;
-  width: 100%;
-}
-
-.turn {
-  margin: fill;
-  padding: 10px;
-  display: flex;
-}
-
-.boardTitle {
-  text-align: center;
-  padding: 10px;
-  align-content: center;
-}
-
-.boardMessages {
-  text-align: center;
-  padding: 10px;
-  font-size: 18px;
-  align-content: center;
 }
