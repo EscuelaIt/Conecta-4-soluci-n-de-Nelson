@@ -1,15 +1,13 @@
 export class ClosedInterval {
+  #min
+  #max
 
-    #min;
-    #max;
+  constructor(min, max) {
+    this.#min = min
+    this.#max = max
+  }
 
-    constructor(min, max) {
-        this.#min = min;
-        this.#max = max;
-    }
-
-    isIncluded(value) {
-        return this.#min <= value && value <= this.#max;
-    }
-
+  isIncluded(value) {
+    return this.#min <= value && value <= this.#max
+  }
 }
