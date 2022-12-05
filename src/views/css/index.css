@@ -56,7 +56,7 @@ body {
   background: var(--th-background-color);
 }
 
-.dialogModal {
+#dialogModal {
   width: 300px;
   margin-right: auto;
   margin-left: auto;
@@ -67,7 +67,7 @@ body {
   background: #3a445e;
 }
 
-.dialogModal button {
+#dialogModal button {
   padding: 10px;
   margin: 10px;
   background: #0c1621;

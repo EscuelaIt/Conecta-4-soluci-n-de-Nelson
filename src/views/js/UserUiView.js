@@ -1,4 +1,6 @@
 import { BoardView } from './BoardView.js'
+import { Dom } from './utils/Dom.js'
+import { Event } from './utils/Event.js'
 
 export class UserUiView {
   #boardView = new BoardView()
@@ -10,50 +12,6 @@ export class UserUiView {
       this.instance = new UserUiView()
     }
     return this.instance
-  }
-
-  drawGetNumberOfPlayers() {
-    let container = document.getElementById('boardMessages')
-
-    let modalContainer = document.createElement('div')
-    modalContainer.id = 'modalContainer'
-    let { modal } = this.#getModalContent()
-
-    let playerVsPlayerButton = document.createElement('button')
-    playerVsPlayerButton.innerText = `Player\nVS\nPlayer`
-    playerVsPlayerButton.addEventListener('click', () => {
-      dispatchEvent(
-        new CustomEvent('startNewGame', {
-          detail: { players: 2 },
-        })
-      )
-    })
-
-    let playerVsMachineButton = document.createElement('button')
-    playerVsMachineButton.innerText = `Player\nVS\nMachine`
-    playerVsMachineButton.addEventListener('click', () => {
-      dispatchEvent(
-        new CustomEvent('startNewGame', {
-          detail: { players: 1 },
-        })
-      )
-    })
-
-    let MachineVsMachineButton = document.createElement('button')
-    MachineVsMachineButton.innerText = `Machine\nVS\nMachine`
-    MachineVsMachineButton.addEventListener('click', () => {
-      dispatchEvent(
-        new CustomEvent('startNewGame', {
-          detail: { players: 0 },
-        })
-      )
-    })
-
-    modal.append(playerVsPlayerButton)
-    modal.append(playerVsMachineButton)
-    modal.append(MachineVsMachineButton)
-    modalContainer.append(modal)
-    container.append(modalContainer)
   }
 
   buildBoard(board) {
@@ -68,65 +26,84 @@ export class UserUiView {
     this.#boardView.removeControls()
   }
 
+  drawGetNumberOfPlayers() {
+    let playerVsPlayer = Dom.createButton(`Player\nVS\nPlayer`)
+    Event.setCustomClickEventHandler(playerVsPlayer, 'startNewGame', {
+      players: 2,
+    })
+
+    let playerVsMachine = Dom.createButton(`Player\nVS\nMachine`)
+    Event.setCustomClickEventHandler(playerVsMachine, 'startNewGame', {
+      players: 1,
+    })
+
+    let MachineVsMachine = Dom.createButton(`Machine\nVS\nMachine`)
+    Event.setCustomClickEventHandler(MachineVsMachine, 'startNewGame', {
+      players: 0,
+    })
+
+    let modal = Dom.createElementWithId('div', 'dialogModal')
+
+    Dom.appendElementsTo(
+      [playerVsPlayer, playerVsMachine, MachineVsMachine],
+      modal
+    )
+
+    let modalContainer = Dom.createElementWithId('div', 'modalContainer')
+    Dom.appendElementTo(modal, modalContainer)
+
+    let container = Dom.getElementById('boardMessages')
+    Dom.appendElementTo(modalContainer, container)
+  }
+
   setTurnMessages(color) {
-    document.getElementById('boardMessages').innerHTML =
+    Dom.setHtmlTextToElementId(
+      'boardMessages',
       `Hey <b style='color: #color'>#color</b> Drop your Token in a Column`.replaceAll(
         `#color`,
         `${color}`
       )
-    const thElements = document.querySelectorAll('th')
-    thElements.forEach((thElement) => {
+    )
+
+    Dom.getElementsByQuery('th').forEach((thElement) => {
       thElement.style.setProperty('--th-background-color', color)
     })
   }
 
   drawResult(color) {
     if (this.#boardView.isWinner()) {
-      this.#drawWinnerMessage(color)
+      Dom.setHtmlTextToElementId(
+        'boardMessages',
+        `<b style='color: ${color}'>${color}</b> Has won the game!`
+      )
     } else {
-      this.drawMessage('boardMessages', 'Draw!')
+      Dom.setHtmlTextToElementId('boardMessages', 'Tied!')
     }
-  }
-
-  #drawWinnerMessage(color) {
-    document.getElementById(
-      'boardMessages'
-    ).innerHTML = `<b style='color: ${color}'>${color}</b> Has won the game!`
   }
 
   isFinished() {
     return this.#boardView.isFinished()
   }
 
-  drawMessage(elementId, message) {
-    document.getElementById(elementId).innerHTML = message
-  }
-
   drawPlayAgainDialog() {
-    let container = document.getElementById('boardMessages')
-    let modalContainer = document.createElement('div')
-    modalContainer.id = 'modalContainer'
-    let { modal } = this.#getModalContent()
-    let yesButton = document.createElement('button')
-    yesButton.innerText = `Pay again!`
-    yesButton.addEventListener(
-      'click',
-      () => {
-        this.#boardView.reset()
-        document.getElementById('boardMessages').innerHTML = ``
-        this.drawGetNumberOfPlayers()
-      },
-      false
-    )
-    modal.append(yesButton)
-    modalContainer.append(modal)
-    container.append(modalContainer)
+    let container = Dom.getElementById('boardMessages')
+    let modalContainer = Dom.createElementWithId('div', 'modalContainer')
+
+    let modal = Dom.createElementWithId('div', 'dialogModal')
+
+    let yesButton = Dom.createButton(`Pay again!`)
+    Event.setEventHandler(yesButton, 'click', () => {
+      this.#boardView.reset()
+      Dom.setHtmlTextToElementId('boardMessages', '')
+      this.drawGetNumberOfPlayers()
+    })
+
+    Dom.appendElementTo(yesButton, modal)
+    Dom.appendElementTo(modal, modalContainer)
+    Dom.appendElementTo(modalContainer, container)
   }
 
-  #getModalContent() {
-    let modal = document.createElement('div')
-    modal.id = 'dialogModal'
-    modal.classList.add('dialogModal')
-    return { modal }
+  drawMessage(message) {
+    Dom.setHtmlTextToElementId('boardMessages', message)
   }
 }

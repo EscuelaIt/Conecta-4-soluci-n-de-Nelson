@@ -1,4 +1,6 @@
 import { Coordinate } from '../../types/Coordinate.js'
+import { Dom } from './utils/Dom.js'
+import { Event } from './utils/Event.js'
 
 export class BoardView {
   #tableElement
@@ -7,53 +9,46 @@ export class BoardView {
 
   build(board) {
     this.#board = board
-    this.#tableElement = document.createElement('table')
-    let tableHeadElement = document.createElement('tr')
-    tableHeadElement.id = `6`
-    this.#tableElement.append(tableHeadElement)
+    this.#tableElement = Dom.createElementWithId('table', 'connect4Board')
+    let tableHeadElement = Dom.createElementWithId('tr', '6')
+    Dom.appendElementTo(tableHeadElement, this.#tableElement)
+
     for (let i = 0; i < 7; i++) {
-      let newHeadCol = document.createElement('th')
-      newHeadCol.id = `Column-${i}-Control`
-      newHeadCol.addEventListener('click', () => {
-        dispatchEvent(
-          new CustomEvent('dropToken', {
-            detail: { column: i },
-          })
-        )
-      })
-      tableHeadElement.append(newHeadCol)
+      let newHeadCol = Dom.createElementWithId('th', `Column-${i}-Control`)
+      Event.setCustomClickEventHandler(newHeadCol, 'dropToken', { column: i })
+      Dom.appendElementTo(newHeadCol, tableHeadElement)
     }
 
     for (let row = Coordinate.NUMBER_ROWS; row > 0; row--) {
-      let rowElement = document.createElement('tr')
-      rowElement.id = `${row - 1}`
-      this.#tableElement.append(rowElement)
+      let rowElement = Dom.createElementWithId('tr', `${row - 1}`)
+      Dom.appendElementTo(rowElement, this.#tableElement)
+
       for (let column = 0; column < Coordinate.NUMBER_COLUMNS; column++) {
-        let newCol = document.createElement('td')
-        newCol.id = `${row - 1}-${column}`
-        rowElement.append(newCol)
+        let newCol = Dom.createElementWithId('td', `${row - 1}-${column}`)
+        Dom.appendElementTo(newCol, rowElement)
       }
     }
-    document.getElementById('board').append(this.#tableElement)
+    Dom.appendElementTo(this.#tableElement, Dom.getElementById('board'))
   }
 
   drawTokenOnBoard() {
     let lastToken = this.#board.getLastDrop()
-    let tokenCell = document.getElementById(
+    let tokenCell = Dom.getElementById(
       `${lastToken.getRow()}-${lastToken.getColumn()}`
     )
-    tokenCell.style.background = this.#board.getColor(
-      new Coordinate(lastToken.getRow(), lastToken.getColumn())
+    Dom.setBackgroundColor(
+      tokenCell,
+      this.#board.getColor(
+        new Coordinate(lastToken.getRow(), lastToken.getColumn())
+      )
     )
   }
 
   removeControls() {
-    let newRow = document.createElement('tr')
-    newRow.id = `6`
+    let newRow = Dom.createElementWithId('tr', '6')
     for (let i = 0; i < 7; i++) {
-      let newCol = document.createElement('th')
-      newCol.id = `Column-${i}-Control`
-      newRow.append(newCol)
+      let newCol = Dom.createElementWithId('th', `Column-${i}-Control`)
+      Dom.appendElementTo(newCol, newRow)
     }
     this.#tableElement.childNodes[0].replaceWith(newRow)
   }

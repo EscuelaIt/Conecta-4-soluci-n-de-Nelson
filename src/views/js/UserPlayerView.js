@@ -11,13 +11,12 @@ export class UserPlayerView extends PlayerView {
     let valid
     valid = Coordinate.isColumnValid(column)
     if (!valid) {
-      UserUiView.getInstance().drawMessage('boardMessages', 'Invalid column')
+      UserUiView.getInstance().drawMessage('Invalid column')
       return null
     } else {
       valid = !this.getActivePlayer().isComplete(column)
       if (!valid) {
         UserUiView.getInstance().drawMessage(
-          'boardMessages',
           'This column is full please select other.'
         )
         return null
