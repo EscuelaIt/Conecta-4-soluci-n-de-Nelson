@@ -29,17 +29,17 @@ export class UserUiView {
   drawGetNumberOfPlayers() {
     let playerVsPlayer = Dom.createButton(`Player\nVS\nPlayer`)
     Event.setCustomClickEventHandler(playerVsPlayer, 'startNewGame', {
-      players: 2,
+      numOfPlayers: 2,
     })
 
     let playerVsMachine = Dom.createButton(`Player\nVS\nMachine`)
     Event.setCustomClickEventHandler(playerVsMachine, 'startNewGame', {
-      players: 1,
+      numOfPlayers: 1,
     })
 
     let MachineVsMachine = Dom.createButton(`Machine\nVS\nMachine`)
     Event.setCustomClickEventHandler(MachineVsMachine, 'startNewGame', {
-      players: 0,
+      numOfPlayers: 0,
     })
 
     let modal = Dom.createElementWithId('div', 'dialogModal')
