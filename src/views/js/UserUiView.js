@@ -43,7 +43,6 @@ export class UserUiView {
     })
 
     let modal = Dom.createElementWithId('div', 'dialogModal')
-
     Dom.appendElementsTo(
       [playerVsPlayer, playerVsMachine, MachineVsMachine],
       modal
@@ -70,7 +69,7 @@ export class UserUiView {
     })
   }
 
-  drawResult(color) {
+  resultActions(color) {
     if (this.#boardView.isWinner()) {
       Dom.setHtmlTextToElementId(
         'boardMessages',
@@ -79,6 +78,8 @@ export class UserUiView {
     } else {
       Dom.setHtmlTextToElementId('boardMessages', 'Tied!')
     }
+    this.removeBoardControls()
+    this.drawPlayAgainDialog()
   }
 
   isFinished() {

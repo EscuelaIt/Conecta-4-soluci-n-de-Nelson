@@ -24,7 +24,7 @@ export class TurnView {
     this.#column = column
     this.#turn.getActivePlayer().accept(this)
     UserUiView.getInstance().drawTokenOnBoard()
-    this.#isFinished()
+    this.#checkBoardStatusAndContinue()
   }
 
   visitUserPlayer(userPlayer) {
@@ -35,13 +35,11 @@ export class TurnView {
     new MachinePlayerView(machinePlayer).dropToken()
   }
 
-  #isFinished() {
+  #checkBoardStatusAndContinue() {
     if (UserUiView.getInstance().isFinished()) {
-      UserUiView.getInstance().removeBoardControls()
-      UserUiView.getInstance().drawResult(
+      UserUiView.getInstance().resultActions(
           this.#turn.getActivePlayer().getColor().toString()
       )
-      UserUiView.getInstance().drawPlayAgainDialog()
     } else {
       this.machinePlayHandler()
     }
