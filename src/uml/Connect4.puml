@@ -48,8 +48,8 @@ class UserPlayer
 GameView ---> Game
 GameView --> TurnView
 GameView -> BoardView
-BoardView *--> Board
-TurnView *--> Turn
+BoardView --> Board
+TurnView --> Turn
 Turn *---> "0-2" UserPlayer
 Turn *--> "0-2" RandomMachinePlayer
 Game *--> Turn
@@ -59,8 +59,8 @@ PlayerView <|-- UserPlayerView
 PlayerView <|-- MachinePlayerView
 Player <|-- RandomMachinePlayer
 Player <|-- UserPlayer
-MachinePlayerView *---> RandomMachinePlayer
-UserPlayerView *---> UserPlayer
+MachinePlayerView ---> RandomMachinePlayer
+UserPlayerView ---> UserPlayer
 
 
 

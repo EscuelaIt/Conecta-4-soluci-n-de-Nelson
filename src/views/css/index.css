@@ -1,5 +1,5 @@
 :root {
-  --th-background-color: Red;
+  --th-background-image: url("../images/red-token.png");;
 }
 
 body {
@@ -39,7 +39,7 @@ body {
 }
 
 .board table > tr > td {
-  background: #0c1621;
+  background-color: #0c1621;
   border-radius: 100%;
   min-width: 15px;
   min-height: 15px;
@@ -47,16 +47,17 @@ body {
 }
 
 .board table > tr > th {
-  background: #0c1621;
+  background-color: #0c1621;
   cursor: pointer;
-  border-radius: 0px 0px 100% 100%;
+  border-radius: 100%;
   min-width: 10px;
   min-height: 10px;
   box-shadow: 2px 1px 1px 1px black inset;
 }
 
 .board table > tr > th:hover {
-  background: var(--th-background-color);
+
+  background: var(--th-background-image);
 }
 
 .main {

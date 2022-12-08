@@ -53,11 +53,12 @@ export class BoardView {
 
   dropToken() {
     let lastToken = this.#board.getLastDrop()
-    document.getElementById(
-      `${lastToken.getRow()}-${lastToken.getColumn()}`
-    ).style.background = this.#board
+    let color = this.#board
       .getColor(new Coordinate(lastToken.getRow(), lastToken.getColumn()))
       .toString()
+    document.getElementById(
+      `${lastToken.getRow()}-${lastToken.getColumn()}`
+    ).style.backgroundImage = `url("../views/images/${color.toLowerCase()}-token.png")`
   }
 
   resultActions() {

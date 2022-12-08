@@ -15,7 +15,7 @@ export class TurnView {
     document.getElementById('redTurn').style.opacity = color === 'Red' ? 1 : 0.2
     document.getElementById('yellowTurn').style.opacity = color === 'Yellow' ? 1 : 0.2
     document.querySelectorAll('th').forEach(th=>{
-      th.style.setProperty(`--th-background-color`, color)
+      th.style.setProperty(`--th-background-image`, `url("../images/${color.toLowerCase()}-token.png")`)
     })
   }
 
