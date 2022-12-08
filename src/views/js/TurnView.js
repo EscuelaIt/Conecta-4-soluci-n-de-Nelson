@@ -1,5 +1,5 @@
-import {UserPlayerView} from "./UserPlayerView.js";
-import {MachinePlayerView} from "./MachinePlayerView.js";
+import { UserPlayerView } from './UserPlayerView.js'
+import { MachinePlayerView } from './MachinePlayerView.js'
 
 export class TurnView {
   #turn
@@ -10,12 +10,15 @@ export class TurnView {
     this.drawTurnMessage()
   }
 
-  drawTurnMessage(){
+  drawTurnMessage() {
     let color = this.#turn.getActivePlayer().getColor().toString()
     document.getElementById('redTurn').style.opacity = color === 'Red' ? 1 : 0.2
     document.getElementById('yellowTurn').style.opacity = color === 'Yellow' ? 1 : 0.2
-    document.querySelectorAll('th').forEach(th=>{
-      th.style.setProperty(`--th-background-image`, `url("../images/${color.toLowerCase()}-token.png")`)
+    document.querySelectorAll('th').forEach((th) => {
+      th.style.setProperty(
+        `--th-background-image`,
+        `url("../images/${color.toLowerCase()}-token.png")`
+      )
     })
   }
 

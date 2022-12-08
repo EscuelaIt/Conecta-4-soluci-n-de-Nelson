@@ -6,11 +6,10 @@ export class PlayerView {
   }
 
   dropToken(column) {
-      this.#player.dropToken(this.getColumn(column))
+    this.#player.dropToken(this.getColumn(column))
   }
 
-  getColumn() {
-  }
+  getColumn() {}
 
   getActivePlayer() {
     return this.#player

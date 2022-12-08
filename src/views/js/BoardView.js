@@ -5,6 +5,8 @@ export class BoardView {
 
   constructor(board) {
     this.#board = board
+    document.getElementById('boardMessages').innerHTML = ''
+    document.getElementById('board').innerHTML = ''
     this.#build()
   }
 

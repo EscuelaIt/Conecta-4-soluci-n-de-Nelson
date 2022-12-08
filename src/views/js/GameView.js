@@ -2,7 +2,7 @@ import { Game } from '../../models/Game.js'
 import { TurnView } from './TurnView.js'
 import { BoardView } from './BoardView.js'
 import { UserPlayer } from '../../models/UserPlayer.js'
-import {assert} from "../../utils/assert.js";
+import { assert } from '../../utils/assert.js'
 
 export class GameView {
   #game
@@ -17,31 +17,30 @@ export class GameView {
       0
     )
 
-    let modalContainer = document.createElement('div')
-    modalContainer.id = 'modalContainer'
-    modalContainer.append(playerVsPlayer, playerVsMachine, MachineVsMachine)
-    document.getElementById('leftPanel').append(modalContainer)
+    let buttonsContainer = document.createElement('div')
+    buttonsContainer.id = 'buttonsContainer'
+    buttonsContainer.append(playerVsPlayer, playerVsMachine, MachineVsMachine)
+    document.getElementById('leftPanel').append(buttonsContainer)
   }
 
-  #createNumOfPlayerButton(buttonText, numOfPlayers) {
+  #createNumOfPlayerButton(buttonText, numOfUsersPlayer) {
     let numOfPlayerButton = document.createElement('button')
     numOfPlayerButton.innerText = buttonText
     numOfPlayerButton.addEventListener('click', () => {
-      document.getElementById('modalContainer').remove()
-      this.#startNewGame(numOfPlayers)
+      document.getElementById('buttonsContainer').remove()
+      this.#startNewGame(numOfUsersPlayer)
     })
     return numOfPlayerButton
   }
 
-  #startNewGame(numOfPlayers) {
-    document.getElementById('board').innerHTML = ''
-    document.getElementById('boardMessages').innerHTML = ''
-    this.#game = new Game(numOfPlayers)
+  #startNewGame(numOfUsersPlayer) {
+    this.#game = new Game(numOfUsersPlayer)
     this.#turnView = new TurnView(this.#game.getTurn())
     this.#boardView = new BoardView(this.#game.getBoard())
-    this.#boardView.setControlsCallback(this.#dropToken.bind(this))
-    if (numOfPlayers === 0) {
-        this.#dropToken()
+    if (numOfUsersPlayer === 0) {
+      this.#dropToken()
+    } else {
+      this.#boardView.setControlsCallback(this.#dropToken.bind(this))
     }
   }
 
@@ -64,14 +63,14 @@ export class GameView {
   #drawPlayAgainDialog() {
     let playAgainButton = document.createElement('button')
     playAgainButton.innerText = 'Play again!'
+    let buttonsContainer = document.createElement('div')
+    buttonsContainer.id = 'buttonsContainer'
+    buttonsContainer.append(playAgainButton)
+    document.getElementById('leftPanel').append(buttonsContainer)
     playAgainButton.addEventListener('click', () => {
-      document.getElementById('modalContainer').remove()
-      this.askPlayers()
+      document.getElementById('buttonsContainer').remove()
+      new GameView().askPlayers()
     })
-    let modalContainer = document.createElement('div')
-    modalContainer.id = 'modalContainer'
-    modalContainer.append(playAgainButton)
-    document.getElementById('leftPanel').append(modalContainer)
   }
 }
 

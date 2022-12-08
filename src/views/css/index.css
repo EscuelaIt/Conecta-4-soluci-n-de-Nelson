@@ -1,5 +1,5 @@
 :root {
-  --th-background-image: url("../images/red-token.png");;
+  --th-background-image: url('../images/red-token.png');
 }
 
 body {
@@ -56,7 +56,6 @@ body {
 }
 
 .board table > tr > th:hover {
-
   background: var(--th-background-image);
 }
 
@@ -76,11 +75,11 @@ body {
   padding: 10px;
 }
 
-#modalContainer {
+#buttonsContainer {
   text-align: center;
 }
 
-#modalContainer button {
+#buttonsContainer button {
   max-width: 200px;
   text-align: center;
   padding: 10px;
