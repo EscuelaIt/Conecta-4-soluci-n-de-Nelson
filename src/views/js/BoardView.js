@@ -2,18 +2,18 @@ import { Coordinate } from '../../types/Coordinate.js'
 
 export class BoardView {
   #board
-  #tableElement
+
   constructor(board) {
     this.#board = board
-    this.build()
+    this.#build()
   }
 
-  build() {
-    this.#tableElement = document.createElement('table')
-    this.#tableElement.id = 'connect4Board'
+  #build() {
+    let table = document.createElement('table')
+    table.id = 'connect4Board'
     let tableHeadElement = document.createElement('tr')
     tableHeadElement.id = 'controls'
-    this.#tableElement.append(tableHeadElement)
+    table.append(tableHeadElement)
     for (let i = 0; i < Coordinate.NUMBER_COLUMNS; i++) {
       let newHeadCol = document.createElement('th')
       newHeadCol.id = `Column-${i}-Control`
@@ -22,14 +22,14 @@ export class BoardView {
     for (let row = Coordinate.NUMBER_ROWS; row > 0; row--) {
       let rowElement = document.createElement('tr')
       rowElement.id = `${row - 1}`
-      this.#tableElement.append(rowElement)
+      table.append(rowElement)
       for (let column = 0; column < Coordinate.NUMBER_COLUMNS; column++) {
         let newCol = document.createElement('td')
         newCol.id = `${row - 1}-${column}`
         rowElement.append(newCol)
       }
     }
-    document.getElementById('board').append(this.#tableElement)
+    document.getElementById('board').append(table)
   }
 
   setControlsCallback(callback) {
@@ -61,17 +61,19 @@ export class BoardView {
   }
 
   resultActions() {
-    let lastToken = this.#board.getLastDrop()
-    let color = this.#board.getColor(
-      new Coordinate(lastToken.getRow(), lastToken.getColumn())
-    )
+    this.removeControls()
     if (this.#board.isWinner()) {
+      let color = this.#board.getColor(
+        new Coordinate(
+          this.#board.getLastDrop().getRow(),
+          this.#board.getLastDrop().getColumn()
+        )
+      )
       document.getElementById(
         'boardMessages'
       ).innerHTML = `<b style='color: ${color}'>${color}</b> Has won the game!`
     } else {
       document.getElementById('boardMessages').innerHTML = 'Tied!'
     }
-    this.removeControls()
   }
 }

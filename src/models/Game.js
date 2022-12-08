@@ -27,10 +27,6 @@ export class Game {
         return this.#board.isComplete();
     }
 
-    isColumnFull(column) {
-        return this.#board.isComplete(column);
-    }
-
     isWinner() {
         return this.#board.isWinner();
     }
@@ -41,10 +37,6 @@ export class Game {
 
     getActivePlayer(){
         return this.#turn.getActivePlayer();
-    }
-
-    getActiveColor(){
-        return this.getActivePlayer().getColor();
     }
 
     next(){

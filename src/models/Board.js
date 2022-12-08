@@ -20,6 +20,7 @@ export class Board {
 
   dropToken(column, color) {
     assert(!this.isComplete(column))
+    assert(!this.isWinner())
     this.#lastDrop = new Coordinate(0, column)
     while (!this.isEmpty(this.#lastDrop)) {
       this.#lastDrop = this.#lastDrop.shifted(Direction.NORTH.getCoordinate())

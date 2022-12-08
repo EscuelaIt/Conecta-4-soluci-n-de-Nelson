@@ -5,8 +5,8 @@ export class PlayerView {
     this.#player = player
   }
 
-  dropToken(col) {
-      this.#player.dropToken(this.getColumn(col))
+  dropToken(column) {
+      this.#player.dropToken(this.getColumn(column))
   }
 
   getColumn() {

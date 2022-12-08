@@ -1,0 +1,67 @@
+@startuml
+class GameView{
+-game
+-turnView
+-boardView
+askPlayers()
+-createNumOfPlayerButton(buttonText, numOfPlayers)
+-startNewGame(numOfPlayers)
+-dropToken(column)
+-drawPlayAgainDialog()
+}
+class TurnView{
+-turn
+constructor(turn)
+dropToken(column)
+visitUserPlayer(userPlayer)
+visitMachinePlayer(machinePlayer)
+drawTurnMessage()
+}
+class BoardView{
+-board
+constructor(board)
+-build()
+setControlsCallback(callback)
+removeControls()
+dropToken()
+resultActions()
+}
+class MachinePlayerView{
+constructor(player)
+getColumn()
+}
+abstract class PlayerView{
+-player
+constructor(player)
+dropToken(column)
+getColumn()
+}
+
+class UserPlayerView{
+constructor(player)
+getColumn(column)
+}
+Abstract    class Player
+class RandomMachinePlayer
+class UserPlayer
+
+GameView ---> Game
+GameView --> TurnView
+GameView -> BoardView
+BoardView *--> Board
+TurnView *--> Turn
+Turn *---> "0-2" UserPlayer
+Turn *--> "0-2" RandomMachinePlayer
+Game *--> Turn
+Game *--> Board
+TurnView -.-> "2" PlayerView
+PlayerView <|-- UserPlayerView
+PlayerView <|-- MachinePlayerView
+Player <|-- RandomMachinePlayer
+Player <|-- UserPlayer
+MachinePlayerView *---> RandomMachinePlayer
+UserPlayerView *---> UserPlayer
+
+
+
+@enduml

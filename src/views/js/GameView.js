@@ -2,6 +2,7 @@ import { Game } from '../../models/Game.js'
 import { TurnView } from './TurnView.js'
 import { BoardView } from './BoardView.js'
 import { UserPlayer } from '../../models/UserPlayer.js'
+import {assert} from "../../utils/assert.js";
 
 export class GameView {
   #game
@@ -38,15 +39,14 @@ export class GameView {
     this.#game = new Game(numOfPlayers)
     this.#turnView = new TurnView(this.#game.getTurn())
     this.#boardView = new BoardView(this.#game.getBoard())
-    this.#boardView.setControlsCallback(this.dropToken.bind(this))
+    this.#boardView.setControlsCallback(this.#dropToken.bind(this))
     if (numOfPlayers === 0) {
-      setTimeout(() => {
-        this.dropToken()
-      }, 300)
+        this.#dropToken()
     }
   }
 
-  dropToken(column) {
+  #dropToken(column) {
+    assert(!this.#game.isWinner())
     this.#turnView.dropToken(column)
     this.#boardView.dropToken()
     if (this.#game.isFinished()) {
@@ -55,7 +55,7 @@ export class GameView {
     } else {
       if (this.#game.getActivePlayer().constructor.name !== UserPlayer.name) {
         setTimeout(() => {
-          this.dropToken()
+          this.#dropToken()
         }, 300)
       }
     }

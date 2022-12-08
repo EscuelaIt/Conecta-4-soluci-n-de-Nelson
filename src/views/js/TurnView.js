@@ -10,6 +10,15 @@ export class TurnView {
     this.drawTurnMessage()
   }
 
+  drawTurnMessage(){
+    let color = this.#turn.getActivePlayer().getColor().toString()
+    document.getElementById('redTurn').style.opacity = color === 'Red' ? 1 : 0.2
+    document.getElementById('yellowTurn').style.opacity = color === 'Yellow' ? 1 : 0.2
+    document.querySelectorAll('th').forEach(th=>{
+      th.style.setProperty(`--th-background-color`, color)
+    })
+  }
+
   dropToken(column) {
     this.#column = column
     this.#turn.getActivePlayer().accept(this)
@@ -24,15 +33,4 @@ export class TurnView {
   visitMachinePlayer(machinePlayer) {
     new MachinePlayerView(machinePlayer).dropToken()
   }
-
-  drawTurnMessage(){
-    let color = this.#turn.getActivePlayer().getColor().toString()
-    document.getElementById('redTurn').style.opacity = color === 'Red' ? 1 : 0.2
-    document.getElementById('yellowTurn').style.opacity = color === 'Yellow' ? 1 : 0.2
-    document.querySelectorAll('th').forEach(th=>{
-      th.style.setProperty('--th-background-color', color)
-    })
-  }
-
-
 }
