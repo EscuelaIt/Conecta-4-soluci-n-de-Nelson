@@ -1,67 +1,77 @@
 import { Coordinate } from '../../types/Coordinate.js'
-import { Dom } from './utils/Dom.js'
-import { Event } from './utils/Event.js'
 
 export class BoardView {
-  #tableElement
-
   #board
-
-  build(board) {
+  #tableElement
+  constructor(board) {
     this.#board = board
-    this.#tableElement = Dom.createElementWithId('table', 'connect4Board')
-    let tableHeadElement = Dom.createElementWithId('tr', '6')
-    Dom.appendElementTo(tableHeadElement, this.#tableElement)
-
-    for (let i = 0; i < 7; i++) {
-      let newHeadCol = Dom.createElementWithId('th', `Column-${i}-Control`)
-      Event.setCustomClickEventHandler(newHeadCol, 'dropToken', { column: i })
-      Dom.appendElementTo(newHeadCol, tableHeadElement)
-    }
-
-    for (let row = Coordinate.NUMBER_ROWS; row > 0; row--) {
-      let rowElement = Dom.createElementWithId('tr', `${row - 1}`)
-      Dom.appendElementTo(rowElement, this.#tableElement)
-
-      for (let column = 0; column < Coordinate.NUMBER_COLUMNS; column++) {
-        let newCol = Dom.createElementWithId('td', `${row - 1}-${column}`)
-        Dom.appendElementTo(newCol, rowElement)
-      }
-    }
-    Dom.appendElementTo(this.#tableElement, Dom.getElementById('board'))
+    this.build()
   }
 
-  drawTokenOnBoard() {
-    let lastToken = this.#board.getLastDrop()
-    let tokenCell = Dom.getElementById(
-      `${lastToken.getRow()}-${lastToken.getColumn()}`
-    )
-    Dom.setBackgroundColor(
-      tokenCell,
-      this.#board.getColor(
-        new Coordinate(lastToken.getRow(), lastToken.getColumn())
-      )
-    )
+  build() {
+    this.#tableElement = document.createElement('table')
+    this.#tableElement.id = 'connect4Board'
+    let tableHeadElement = document.createElement('tr')
+    tableHeadElement.id = 'controls'
+    this.#tableElement.append(tableHeadElement)
+    for (let i = 0; i < Coordinate.NUMBER_COLUMNS; i++) {
+      let newHeadCol = document.createElement('th')
+      newHeadCol.id = `Column-${i}-Control`
+      tableHeadElement.append(newHeadCol)
+    }
+    for (let row = Coordinate.NUMBER_ROWS; row > 0; row--) {
+      let rowElement = document.createElement('tr')
+      rowElement.id = `${row - 1}`
+      this.#tableElement.append(rowElement)
+      for (let column = 0; column < Coordinate.NUMBER_COLUMNS; column++) {
+        let newCol = document.createElement('td')
+        newCol.id = `${row - 1}-${column}`
+        rowElement.append(newCol)
+      }
+    }
+    document.getElementById('board').append(this.#tableElement)
+  }
+
+  setControlsCallback(callback) {
+    document.querySelectorAll('th').forEach((headElement, key) => {
+      headElement.addEventListener('click', () => {
+        callback(key)
+      })
+    })
   }
 
   removeControls() {
-    let newRow = Dom.createElementWithId('tr', '6')
-    for (let i = 0; i < 7; i++) {
-      let newCol = Dom.createElementWithId('th', `Column-${i}-Control`)
-      Dom.appendElementTo(newCol, newRow)
+    let tableHeadElement = document.createElement('tr')
+    tableHeadElement.id = 'controls'
+    for (let i = 0; i < Coordinate.NUMBER_COLUMNS; i++) {
+      let newHeadCol = document.createElement('th')
+      newHeadCol.id = `Column-${i}-Control`
+      tableHeadElement.append(newHeadCol)
     }
-    this.#tableElement.childNodes[0].replaceWith(newRow)
+    document.getElementById('controls').replaceWith(tableHeadElement)
   }
 
-  isFinished() {
-    return this.#board.isFinished()
+  dropToken() {
+    let lastToken = this.#board.getLastDrop()
+    document.getElementById(
+      `${lastToken.getRow()}-${lastToken.getColumn()}`
+    ).style.background = this.#board
+      .getColor(new Coordinate(lastToken.getRow(), lastToken.getColumn()))
+      .toString()
   }
 
-  isWinner() {
-    return this.#board.isWinner()
-  }
-
-  reset() {
-    this.#tableElement.remove()
+  resultActions() {
+    let lastToken = this.#board.getLastDrop()
+    let color = this.#board.getColor(
+      new Coordinate(lastToken.getRow(), lastToken.getColumn())
+    )
+    if (this.#board.isWinner()) {
+      document.getElementById(
+        'boardMessages'
+      ).innerHTML = `<b style='color: ${color}'>${color}</b> Has won the game!`
+    } else {
+      document.getElementById('boardMessages').innerHTML = 'Tied!'
+    }
+    this.removeControls()
   }
 }

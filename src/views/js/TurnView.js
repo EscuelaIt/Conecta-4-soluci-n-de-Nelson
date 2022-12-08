@@ -1,30 +1,20 @@
-import { UserPlayerView } from './UserPlayerView.js'
-import { MachinePlayerView } from './MachinePlayerView.js'
-import { UserUiView } from './UserUiView.js'
+import {UserPlayerView} from "./UserPlayerView.js";
+import {MachinePlayerView} from "./MachinePlayerView.js";
 
 export class TurnView {
   #turn
-
   #column
 
   constructor(turn) {
     this.#turn = turn
-
-    UserUiView.getInstance().setTurnMessages(
-      this.#turn.getActivePlayer().getColor().toString()
-    )
-
-    if (this.#turn.getNumOfPlayers() === 0) {
-      UserUiView.getInstance().removeBoardControls()
-      setTimeout(() => this.dropToken(), 300)
-    }
+    this.drawTurnMessage()
   }
 
   dropToken(column) {
     this.#column = column
     this.#turn.getActivePlayer().accept(this)
-    UserUiView.getInstance().drawTokenOnBoard()
-    this.#checkBoardStatusAndContinue()
+    this.#turn.next()
+    this.drawTurnMessage()
   }
 
   visitUserPlayer(userPlayer) {
@@ -35,30 +25,14 @@ export class TurnView {
     new MachinePlayerView(machinePlayer).dropToken()
   }
 
-  #checkBoardStatusAndContinue() {
-    if (UserUiView.getInstance().isFinished()) {
-      UserUiView.getInstance().resultActions(
-          this.#turn.getActivePlayer().getColor().toString()
-      )
-    } else {
-      this.machinePlayHandler()
-    }
+  drawTurnMessage(){
+    let color = this.#turn.getActivePlayer().getColor().toString()
+    document.getElementById('redTurn').style.opacity = color === 'Red' ? 1 : 0.2
+    document.getElementById('yellowTurn').style.opacity = color === 'Yellow' ? 1 : 0.2
+    document.querySelectorAll('th').forEach(th=>{
+      th.style.setProperty('--th-background-color', color)
+    })
   }
 
-  machinePlayHandler() {
-    if (
-      this.#turn.getNumOfPlayers() === 0 ||
-      this.#turn.getNumOfPlayers() === 1 &&
-        this.#turn.getActivePlayer().getColor().toString() === 'Yellow'
-    ) {
-      setTimeout(() => this.dropToken(), 300)
-    }
-  }
 
-  changeTurn() {
-    this.#turn.next()
-    UserUiView.getInstance().setTurnMessages(
-      this.#turn.getActivePlayer().getColor().toString()
-    )
-  }
 }

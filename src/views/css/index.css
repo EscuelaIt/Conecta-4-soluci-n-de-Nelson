@@ -7,6 +7,7 @@ body {
   background: #0c1621;
   height: 100%;
   width: 100%;
+  margin: 0;
 }
 
 .boardTitle {
@@ -44,6 +45,7 @@ body {
   min-height: 15px;
   box-shadow: 2px 1px 1px 1px black inset;
 }
+
 .board table > tr > th {
   background: #0c1621;
   cursor: pointer;
@@ -52,22 +54,34 @@ body {
   min-height: 10px;
   box-shadow: 2px 1px 1px 1px black inset;
 }
+
 .board table > tr > th:hover {
   background: var(--th-background-color);
 }
 
-#dialogModal {
-  width: 300px;
-  margin-right: auto;
-  margin-left: auto;
-  margin-top: 5px;
-  text-align: center;
-  box-shadow: 2px 1px 1px 1px black;
-  border-radius: 10px;
-  background: #3a445e;
+.main {
+  margin: 0;
+  display: flex;
 }
 
-#dialogModal button {
+.leftPanel {
+  width: 200px;
+  padding: 10px;
+  background: #3a445e;
+  height: 100vh;
+}
+
+.rightPanel {
+  padding: 10px;
+}
+
+#modalContainer {
+  text-align: center;
+}
+
+#modalContainer button {
+  max-width: 200px;
+  text-align: center;
   padding: 10px;
   margin: 10px;
   background: #0c1621;
@@ -75,4 +89,16 @@ body {
   font-size: 12px;
   border-radius: 8px;
   font-weight: bold;
+}
+
+.turnColor {
+  text-align: center;
+}
+
+.turnColor #redTurn {
+  opacity: 1;
+}
+
+.turnColor #yellowTurn {
+  opacity: 0.2;
 }

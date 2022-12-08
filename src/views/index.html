@@ -2,25 +2,36 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Connect4</title>
+    <title>GameView</title>
     <link rel="stylesheet" href="css/index.css" />
-    <script type="module" src="js/Connect4.js"></script>
+    <script type="module" src="js/GameView.js"></script>
   </head>
   <body>
-    <header class="boardTitle">
-      <h1>HTML, CSS and Javascript Connect4</h1>
-    </header>
+    <main class="main">
 
-    <main>
-
-      <section class="boardMessages">
-        <div id="boardMessages"></div>
+      <section id="leftPanel" class="leftPanel">
+        <h2>Current Turn: </h2>
+        <div class="turnColor">
+          <img id="redTurn" src="./images/red-token.png" alt="">
+          <img id="yellowTurn" src="./images/yellow-token.png" alt="">
+        </div>
       </section>
 
-      <section class="board" id="board">
+      <section id="rightPanel" class="rightPanel">
+
+        <header class="boardTitle">
+          <h1>HTML, CSS and Javascript GameView</h1>
+        </header>
+
+        <section class="boardMessages">
+          <div id="boardMessages"></div>
+        </section>
+
+        <section class="board" id="board">
+
+        </section>
 
       </section>
-
     </main>
   </body>
 </html>

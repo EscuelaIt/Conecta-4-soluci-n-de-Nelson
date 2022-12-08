@@ -1,6 +1,6 @@
 import { PlayerView } from './PlayerView.js'
 import { Coordinate } from '../../types/Coordinate.js'
-import { UserUiView } from './UserUiView.js'
+
 
 export class UserPlayerView extends PlayerView {
   constructor(player) {
@@ -9,17 +9,13 @@ export class UserPlayerView extends PlayerView {
 
   getColumn(column) {
     let valid
-    valid = Coordinate.isColumnValid(column)
+      valid = Coordinate.isColumnValid(column)
     if (!valid) {
-      UserUiView.getInstance().drawMessage('Invalid column')
-      return null
+      document.getElementById('boardMessages').innerHTML = 'Invalid column';
     } else {
       valid = !this.getActivePlayer().isComplete(column)
       if (!valid) {
-        UserUiView.getInstance().drawMessage(
-          'This column is full please select other.'
-        )
-        return null
+        document.getElementById('boardMessages').innerHTML = 'This column is full please select other.';
       }
     }
     return column

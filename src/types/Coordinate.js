@@ -1,53 +1,53 @@
-import { ClosedInterval } from './ClosedInterval.js'
+import { ClosedInterval } from './ClosedInterval.js';
 
 export class Coordinate {
-  static ORIGIN = new Coordinate(0, 0)
-  static NUMBER_ROWS = 6
-  static #ROWS = new ClosedInterval(0, Coordinate.NUMBER_ROWS - 1)
-  static NUMBER_COLUMNS = 7
-  static #COLUMNS = new ClosedInterval(0, Coordinate.NUMBER_COLUMNS - 1)
 
-  #row
-  #column
+    static ORIGIN = new Coordinate(0, 0);
+    static NUMBER_ROWS = 6;
+    static #ROWS = new ClosedInterval(0, Coordinate.NUMBER_ROWS - 1);
+    static NUMBER_COLUMNS = 7;
+    static #COLUMNS = new ClosedInterval(0, Coordinate.NUMBER_COLUMNS - 1);
 
-  constructor(row, column) {
-    this.#row = row
-    this.#column = column
-  }
+    #row;
+    #column;
 
-  shifted(coordinate) {
-    return new Coordinate(
-      this.#row + coordinate.#row,
-      this.#column + coordinate.#column
-    )
-  }
+    constructor(row, column) {
+        this.#row = row;
+        this.#column = column;
+    }
 
-  isValid() {
-    return (
-      Coordinate.#isRowValid(this.getRow()) &&
-      Coordinate.isColumnValid(this.getColumn())
-    )
-  }
+    shifted(coordinate) {
+        return new Coordinate(this.#row + coordinate.#row,
+            this.#column + coordinate.#column);
+    }
 
-  static isColumnValid(column) {
-    return Coordinate.#COLUMNS.isIncluded(column)
-  }
+    isValid() {
+        return Coordinate.#isRowValid(this.getRow())
+            && Coordinate.isColumnValid(this.getColumn());
+    }
 
-  static #isRowValid(row) {
-    return Coordinate.#ROWS.isIncluded(row)
-  }
+    static isColumnValid(column) {
+        return Coordinate.#COLUMNS.isIncluded(column);
+    }
 
-  getRow() {
-    return this.#row
-  }
+    static #isRowValid(row) {
+        return Coordinate.#ROWS.isIncluded(row);
+    }
 
-  getColumn() {
-    return this.#column
-  }
+    getRow() {
+        return this.#row;
+    }
 
-  equals(coordinate) {
-    if (this === coordinate) return true
-    if (coordinate == null) return false
-    return this.#column === coordinate.#column && this.#row === coordinate.#row
-  }
+    getColumn() {
+        return this.#column;
+    }
+
+    equals(coordinate) {
+        if (this == coordinate)
+            return true;
+        if (coordinate == null)
+            return false;
+        return this.#column === coordinate.#column && this.#row === coordinate.#row;
+    }
+
 }

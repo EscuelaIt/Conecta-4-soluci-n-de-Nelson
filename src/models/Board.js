@@ -2,6 +2,7 @@ import { Coordinate } from '../types/Coordinate.js'
 import { Color } from '../types/Color.js'
 import { Line } from './Line.js'
 import { Direction } from '../types/Direction.js'
+import {assert} from "../utils/assert.js";
 
 export class Board {
   #colors
@@ -18,11 +19,13 @@ export class Board {
   }
 
   dropToken(column, color) {
+    assert(!this.isComplete(column))
     this.#lastDrop = new Coordinate(0, column)
     while (!this.isEmpty(this.#lastDrop)) {
       this.#lastDrop = this.#lastDrop.shifted(Direction.NORTH.getCoordinate())
     }
     this.#colors[this.#lastDrop.getRow()][this.#lastDrop.getColumn()] = color
+
   }
 
   isComplete(column) {
@@ -82,11 +85,11 @@ export class Board {
     return this.isOccupied(coordinate, Color.NULL)
   }
 
-  getLastDrop() {
-    return this.#lastDrop
-  }
-
   getColor(coordinate) {
     return this.#colors[coordinate.getRow()][coordinate.getColumn()]
+  }
+
+  getLastDrop() {
+    return this.#lastDrop
   }
 }
