@@ -1,81 +1,79 @@
-import { Game } from '../../models/Game.js'
-import { TurnView } from './TurnView.js'
-import { BoardView } from './BoardView.js'
-import { assert } from '../../utils/assert.js'
+import { Game } from '../../models/Game.js';
+import { TurnView } from './TurnView.js';
+import { BoardView } from './BoardView.js';
 
 export class GameView {
-  #game
-  #boardView
-  #turnView
+  #game;
+  #boardView;
+  #turnView;
 
   askPlayers() {
-    let playerVsPlayer = this.#createNumOfPlayerButton(`Player VS Player`, 2)
-    let playerVsMachine = this.#createNumOfPlayerButton(`Player VS Machine`, 1)
-    let MachineVsMachine = this.#createNumOfPlayerButton(
-      `Machine VS Machine`,
-      0
-    )
+    const buttons = [
+      [`Player VS Player`, 2],
+      [`Player VS Machine`, 1],
+      [`Machine VS Machine`, 0],
+    ];
 
-    let buttonsContainer = document.createElement('div')
-    buttonsContainer.id = 'buttonsContainer'
-    buttonsContainer.append(playerVsPlayer, playerVsMachine, MachineVsMachine)
-    document.getElementById('leftPanel').append(buttonsContainer)
-  }
+    const buttonsContainer = document.createElement('div');
+    buttonsContainer.id = 'buttonsContainer';
 
-  #createNumOfPlayerButton(buttonText, numOfUsersPlayer) {
-    let numOfPlayerButton = document.createElement('button')
-    numOfPlayerButton.innerText = buttonText
-    numOfPlayerButton.addEventListener('click', () => {
-      document.getElementById('buttonsContainer').remove()
-      this.#startNewGame(numOfUsersPlayer)
-    })
-    return numOfPlayerButton
+    buttons.forEach((button) => {
+      const numOfPlayerButton = document.createElement('button');
+      numOfPlayerButton.innerText = button[0];
+      numOfPlayerButton.addEventListener('click', () => {
+        document.getElementById('buttonsContainer').remove();
+        this.#startNewGame(button[1]);
+      });
+      buttonsContainer.append(numOfPlayerButton);
+    });
+
+    document.getElementById('leftPanel').append(buttonsContainer);
   }
 
   #startNewGame(numOfUsersPlayer) {
-    this.#game = new Game(numOfUsersPlayer)
-    this.#turnView = new TurnView(this.#game.getTurn())
-    this.#boardView = new BoardView(this.#game.getBoard())
+    this.#game = new Game(numOfUsersPlayer);
+    this.#turnView = new TurnView(this.#game.getTurn());
+    this.#boardView = new BoardView(this.#game.getBoard());
     if (numOfUsersPlayer === 0) {
-      this.#game.getActivePlayer().acceptAction(this)
+      this.#game.getActivePlayer().accept(this);
     } else {
-      this.#boardView.setControlsCallback(this.#dropToken.bind(this))
+      this.#boardView.setControlsCallback(this.#play.bind(this));
     }
   }
 
-  #dropToken(column) {
-    assert(!this.#game.isWinner())
-    this.#turnView.dropToken(column)
-    this.#boardView.dropToken()
-
+  #play(column) {
+    this.#turnView.dropToken(column);
+    this.#boardView.renderToken();
     if (this.#game.isFinished()) {
-      this.#boardView.resultActions()
-      this.#drawPlayAgainDialog()
+      this.#boardView.resultActions();
+      this.#drawPlayAgainDialog();
     } else {
-      this.#game.getActivePlayer().acceptAction(this)
+      this.#game.getActivePlayer().accept(this);
     }
   }
 
-  consumeMachineTurn(){
-      setTimeout(() => {
-        this.#dropToken()
-      }, 300)
+  visitUserPlayer(userPlayer) {}
+
+  visitMachinePlayer(machinePlayer) {
+    setTimeout(() => {
+      this.#play();
+    }, 300);
   }
 
   #drawPlayAgainDialog() {
-    let playAgainButton = document.createElement('button')
-    playAgainButton.innerText = 'Play again!'
-    let buttonsContainer = document.createElement('div')
-    buttonsContainer.id = 'buttonsContainer'
-    buttonsContainer.append(playAgainButton)
-    document.getElementById('leftPanel').append(buttonsContainer)
+    let playAgainButton = document.createElement('button');
+    playAgainButton.innerText = 'Play again!';
+    let buttonsContainer = document.createElement('div');
+    buttonsContainer.id = 'buttonsContainer';
+    buttonsContainer.append(playAgainButton);
+    document.getElementById('leftPanel').append(buttonsContainer);
     playAgainButton.addEventListener('click', () => {
-      document.getElementById('buttonsContainer').remove()
-      new GameView().askPlayers()
-    })
+      document.getElementById('buttonsContainer').remove();
+      new GameView().askPlayers();
+    });
   }
 }
 
 window.onload = () => {
-  new GameView().askPlayers()
-}
+  new GameView().askPlayers();
+};

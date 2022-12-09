@@ -1,82 +1,71 @@
-import { Coordinate } from '../../types/Coordinate.js'
+import { Coordinate } from '../../types/Coordinate.js';
 
 export class BoardView {
-  #board
+  #board;
 
   constructor(board) {
-    this.#board = board
-    document.getElementById('boardMessages').innerHTML = ''
-    document.getElementById('board').innerHTML = ''
-    this.#build()
+    this.#board = board;
+    document.getElementById('boardMessages').innerHTML = '';
+    document.getElementById('board').innerHTML = '';
+    const table = document.createElement('table');
+    table.id = 'connect4Board';
+    this.#createTableHead(table);
+    this.#createTableRows(table);
+    document.getElementById('board').append(table);
   }
 
-  #build() {
-    let table = document.createElement('table')
-    table.id = 'connect4Board'
-    let tableHeadElement = document.createElement('tr')
-    tableHeadElement.id = 'controls'
-    table.append(tableHeadElement)
+  #createTableHead(table) {
+    const tableHeadElement = document.createElement('tr');
+    tableHeadElement.id = 'controls';
     for (let i = 0; i < Coordinate.NUMBER_COLUMNS; i++) {
-      let newHeadCol = document.createElement('th')
-      newHeadCol.id = `Column-${i}-Control`
-      tableHeadElement.append(newHeadCol)
+      const newHeadCol = document.createElement('th');
+      newHeadCol.id = `Column-${i}`;
+      tableHeadElement.append(newHeadCol);
     }
+    table.append(tableHeadElement);
+  }
+
+  #createTableRows(table) {
     for (let row = Coordinate.NUMBER_ROWS; row > 0; row--) {
-      let rowElement = document.createElement('tr')
-      rowElement.id = `${row - 1}`
-      table.append(rowElement)
+      const rowElement = document.createElement('tr');
+      rowElement.id = `Row-${row - 1}`;
+      table.append(rowElement);
       for (let column = 0; column < Coordinate.NUMBER_COLUMNS; column++) {
-        let newCol = document.createElement('td')
-        newCol.id = `${row - 1}-${column}`
-        rowElement.append(newCol)
+        const newCol = document.createElement('td');
+        newCol.id = `${column}-${row - 1}`;
+        rowElement.append(newCol);
       }
     }
-    document.getElementById('board').append(table)
   }
 
   setControlsCallback(callback) {
-    document.querySelectorAll('th').forEach((headElement, key) => {
+    document.querySelectorAll('th').forEach((headElement, columnId) => {
       headElement.addEventListener('click', () => {
-        callback(key)
-      })
-    })
+        callback(columnId);
+      });
+    });
   }
 
-  removeControls() {
-    let tableHeadElement = document.createElement('tr')
-    tableHeadElement.id = 'controls'
-    for (let i = 0; i < Coordinate.NUMBER_COLUMNS; i++) {
-      let newHeadCol = document.createElement('th')
-      newHeadCol.id = `Column-${i}-Control`
-      tableHeadElement.append(newHeadCol)
-    }
-    document.getElementById('controls').replaceWith(tableHeadElement)
-  }
-
-  dropToken() {
-    let lastToken = this.#board.getLastDrop()
-    let color = this.#board
-      .getColor(new Coordinate(lastToken.getRow(), lastToken.getColumn()))
-      .toString()
+  renderToken() {
+    const lastToken = this.#board.getLastDrop();
+    const color = this.#board.getColor(lastToken).toString();
     document.getElementById(
-      `${lastToken.getRow()}-${lastToken.getColumn()}`
-    ).style.backgroundImage = `url("../views/images/${color.toLowerCase()}-token.png")`
+      `${lastToken.getColumn()}-${lastToken.getRow()}`
+    ).style.backgroundImage = `url("../views/images/${color.toLowerCase()}-token.png")`;
   }
 
   resultActions() {
-    this.removeControls()
+    const boardMessage = document.getElementById('boardMessages');
     if (this.#board.isWinner()) {
-      let color = this.#board.getColor(
+      const color = this.#board.getColor(
         new Coordinate(
           this.#board.getLastDrop().getRow(),
           this.#board.getLastDrop().getColumn()
         )
-      )
-      document.getElementById(
-        'boardMessages'
-      ).innerHTML = `<b style='color: ${color}'>${color}</b> Has won the game!`
+      );
+      boardMessage.innerHTML = `<b style='color: ${color}'>${color}</b> Has won the game!`;
     } else {
-      document.getElementById('boardMessages').innerHTML = 'Tied!'
+      boardMessage.innerHTML = 'Tied!';
     }
   }
 }

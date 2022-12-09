@@ -4,63 +4,43 @@ class GameView{
 -turnView
 -boardView
 askPlayers()
--createNumOfPlayerButton(buttonText, numOfPlayers)
 -startNewGame(numOfPlayers)
--dropToken(column)
+-play(column)
+visitUserPlayer(userPlayer)
+visitMachinePlayer(machinePlayer)
 -drawPlayAgainDialog()
 }
 class TurnView{
 -turn
 constructor(turn)
+drawTurnMessage()
 dropToken(column)
 visitUserPlayer(userPlayer)
 visitMachinePlayer(machinePlayer)
-drawTurnMessage()
 }
 class BoardView{
 -board
 constructor(board)
--build()
+-createTableHead()
+-createTableRows()
 setControlsCallback(callback)
-removeControls()
-dropToken()
+renderToken()
 resultActions()
 }
-class MachinePlayerView{
-constructor(player)
-getColumn()
-}
-abstract class PlayerView{
--player
-constructor(player)
-dropToken(column)
-getColumn()
-}
 
-class UserPlayerView{
-constructor(player)
-getColumn(column)
-}
 Abstract    class Player
 class RandomMachinePlayer
 class UserPlayer
 
-GameView ---> Game
-GameView --> TurnView
+GameView *---> Game
+GameView -> TurnView
 GameView -> BoardView
-BoardView --> Board
-TurnView --> Turn
+BoardView *--> Board
+TurnView *--> Turn
 Turn *---> "2" Player
 Game *--> Turn
 Game *--> Board
-TurnView -.-> "2" PlayerView
-PlayerView <|-- UserPlayerView
-PlayerView <|-- MachinePlayerView
 Player <|-- RandomMachinePlayer
 Player <|-- UserPlayer
-MachinePlayerView ---> RandomMachinePlayer
-UserPlayerView ---> UserPlayer
-
-
 
 @enduml
