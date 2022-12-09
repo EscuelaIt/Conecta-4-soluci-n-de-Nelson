@@ -1,5 +1,4 @@
 import { PlayerView } from './PlayerView.js'
-import { Coordinate } from '../../types/Coordinate.js'
 
 export class UserPlayerView extends PlayerView {
   constructor(player) {

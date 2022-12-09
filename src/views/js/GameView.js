@@ -1,7 +1,6 @@
 import { Game } from '../../models/Game.js'
 import { TurnView } from './TurnView.js'
 import { BoardView } from './BoardView.js'
-import { UserPlayer } from '../../models/UserPlayer.js'
 import { assert } from '../../utils/assert.js'
 
 export class GameView {
@@ -38,7 +37,7 @@ export class GameView {
     this.#turnView = new TurnView(this.#game.getTurn())
     this.#boardView = new BoardView(this.#game.getBoard())
     if (numOfUsersPlayer === 0) {
-      this.#dropToken()
+      this.#game.getActivePlayer().acceptAction(this)
     } else {
       this.#boardView.setControlsCallback(this.#dropToken.bind(this))
     }
