@@ -21,4 +21,7 @@ export class Player {
     }
 
     accept(visitor){}
+
+    acceptAction(visitor){}
+
 }

@@ -19,4 +19,8 @@ export class RandomMachinePlayer extends MachinePlayer {
         return column;
     }
 
+    acceptAction(visitor){
+        visitor.consumeMachineTurn();
+    }
+
 }

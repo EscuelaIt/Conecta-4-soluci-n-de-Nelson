@@ -53,12 +53,14 @@ export class GameView {
       this.#boardView.resultActions()
       this.#drawPlayAgainDialog()
     } else {
-      if (!(this.#game.getActivePlayer() instanceof UserPlayer)) {
-        setTimeout(() => {
-          this.#dropToken()
-        }, 300)
-      }
+      this.#game.getActivePlayer().acceptAction(this)
     }
+  }
+
+  consumeMachineTurn(){
+      setTimeout(() => {
+        this.#dropToken()
+      }, 300)
   }
 
   #drawPlayAgainDialog() {
