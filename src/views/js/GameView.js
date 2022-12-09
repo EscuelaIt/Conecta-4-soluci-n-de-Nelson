@@ -48,11 +48,12 @@ export class GameView {
     assert(!this.#game.isWinner())
     this.#turnView.dropToken(column)
     this.#boardView.dropToken()
+
     if (this.#game.isFinished()) {
       this.#boardView.resultActions()
       this.#drawPlayAgainDialog()
     } else {
-      if (this.#game.getActivePlayer().constructor.name !== UserPlayer.name) {
+      if (!(this.#game.getActivePlayer() instanceof UserPlayer)) {
         setTimeout(() => {
           this.#dropToken()
         }, 300)
