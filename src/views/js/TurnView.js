@@ -1,5 +1,6 @@
 export class TurnView {
   #turn;
+  #column;
 
   constructor(turn) {
     this.#turn = turn;
@@ -17,8 +18,18 @@ export class TurnView {
   }
 
   dropToken(column) {
-    this.#turn.getActivePlayer().dropToken(column);
+    this.#column = column
+    this.#turn.getActivePlayer().accept(this);
     this.#turn.next();
     this.drawTurnMessage();
   }
+
+  visitUserPlayer(userPlayer) {
+    userPlayer.dropToken(this.#column)
+  }
+
+  visitMachinePlayer(machinePlayer) {
+    machinePlayer.dropToken(machinePlayer.getColumn())
+  }
+
 }

@@ -49,7 +49,7 @@ export class GameView {
 
   visitMachinePlayer(machinePlayer) {
     this.#machineTimeOut = setTimeout(() => {
-      this.#play(machinePlayer.getColumn());
+      this.#play();
     }, 300);
   }
 
