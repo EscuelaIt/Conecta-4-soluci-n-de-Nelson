@@ -69,6 +69,7 @@ body {
   padding: 10px;
   background: #3a445e;
   height: 100vh;
+  overflow: auto;
 }
 
 .rightPanel {
@@ -79,7 +80,7 @@ body {
   text-align: center;
 }
 
-#buttonsContainer button {
+button {
   max-width: 200px;
   text-align: center;
   padding: 10px;
@@ -89,6 +90,43 @@ body {
   font-size: 12px;
   border-radius: 8px;
   font-weight: bold;
+}
+
+#savedGamesMessage{
+  font-size: 12px;
+  color: brown;
+  text-align: center;
+}
+
+#savedGames div{
+  position: relative;
+  font-size: small;
+  padding: 10px;
+  cursor: pointer;
+}
+
+#savedGames div:hover{
+  background: #0c1621;
+  transition-duration: 400ms;
+  transition-property: background-color;
+}
+
+#savedGames div>b {
+  color: red;
+  border-radius: 100%;
+  padding-left: 5px;
+  padding-right: 5px;
+  border: 1px solid red;
+  font-size: medium;
+  position: absolute;
+  right: 5px;
+}
+
+#savedGames div>b:hover {
+  border: 1px solid aliceblue;
+  color: aquamarine;
+  transition-duration: 400ms;
+  transition-property: background-color;
 }
 
 .turnColor {

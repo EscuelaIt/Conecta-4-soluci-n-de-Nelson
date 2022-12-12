@@ -7,18 +7,20 @@ export class Turn {
   #players;
   #activePlayer;
   #board;
+  #numOfHumanPlayers;
 
-  constructor(board, numOfPlayers) {
+  constructor(board, numOfHumanPlayers, activePlayer = 0) {
+    this.#numOfHumanPlayers = numOfHumanPlayers;
     this.#board = board;
     this.#players = [];
 
     for (let i = 0; i < Turn.#NUMBER_PLAYERS; i++) {
       this.#players[i] =
-        i < numOfPlayers
+        i < numOfHumanPlayers
           ? new UserPlayer(Color.get(i), this.#board)
           : new RandomMachinePlayer(Color.get(i), this.#board);
     }
-    this.#activePlayer = 0;
+    this.#activePlayer = activePlayer;
   }
 
   next() {
@@ -29,5 +31,16 @@ export class Turn {
 
   getActivePlayer() {
     return this.#players[this.#activePlayer];
+  }
+
+  toPrimitives() {
+    return {
+      numOfHumanPlayers: this.#numOfHumanPlayers,
+      activePlayer: this.#activePlayer,
+    };
+  }
+
+  static fromPrimitives(board, turn) {
+    return new Turn(board, turn.numOfHumanPlayers, turn.activePlayer);
   }
 }

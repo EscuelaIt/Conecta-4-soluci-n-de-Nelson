@@ -89,4 +89,24 @@ export class Board {
   getLastDrop() {
     return this.#lastDrop;
   }
+
+  toPrimitives() {
+    return {
+      colors: this.#colors.map((row) => row.toString()),
+      lastDrop: this.#lastDrop?.toPrimitives(),
+    };
+  }
+
+  fromPrimitives(board) {
+    this.#colors = [];
+    board.colors.forEach((row, rowKey) => {
+      this.#colors[rowKey] = [];
+      row.split(',').forEach((color, columnKey) => {
+        this.#colors[rowKey][columnKey] = Color.fromString(color);
+      });
+    });
+
+    this.#lastDrop = new Coordinate(board.lastDrop.row, board.lastDrop.column);
+    return this;
+  }
 }

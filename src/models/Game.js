@@ -5,9 +5,9 @@ export class Game {
   #board;
   #turn;
 
-  constructor(numOfPlayers) {
-    this.#board = new Board();
-    this.#turn = new Turn(this.#board, numOfPlayers);
+  constructor(board, turn) {
+    this.#board = board;
+    this.#turn = turn;
   }
 
   getTurn() {
@@ -40,5 +40,20 @@ export class Game {
 
   next() {
     this.#turn.next();
+  }
+
+  toPrimitives() {
+    return {
+      turn: this.#turn.toPrimitives(),
+      board: this.#board.toPrimitives(),
+    };
+  }
+
+  static fromPrimitives(game) {
+    const board = new Board();
+    return new Game(
+      board.fromPrimitives(game.board),
+      Turn.fromPrimitives(board, game.turn)
+    );
   }
 }

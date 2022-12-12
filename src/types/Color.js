@@ -5,7 +5,7 @@ export class Color {
     static NULL = new Color(` `);
     #string;
 
-    constructor(string) {
+    constructor(string = ` `) {
         this.#string = string;
     }
 
@@ -19,6 +19,17 @@ export class Color {
 
     toString() {
         return this.#string;
+    }
+
+    static fromString(color){
+        switch (color) {
+            case 'Red':
+              return Color.RED;
+            case 'Yellow':
+                return Color.YELLOW;
+            default:
+                return Color.NULL;
+          }
     }
 
 }

@@ -50,4 +50,11 @@ export class Coordinate {
         return this.#column === coordinate.#column && this.#row === coordinate.#row;
     }
 
+    toPrimitives() {
+        return {
+            row: this.getRow(),
+            column: this.getColumn()
+        }
+    }
+
 }

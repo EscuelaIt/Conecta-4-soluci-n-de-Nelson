@@ -5,6 +5,10 @@ export class BoardView {
 
   constructor(board) {
     this.#board = board;
+    this.render();
+  }
+
+  render() {
     document.getElementById('boardMessages').innerHTML = '';
     document.getElementById('board').innerHTML = '';
     const table = document.createElement('table');
@@ -33,6 +37,10 @@ export class BoardView {
       for (let column = 0; column < Coordinate.NUMBER_COLUMNS; column++) {
         const newCol = document.createElement('td');
         newCol.id = `${column}-${row - 1}`;
+        const color = this.#board.getColor(new Coordinate(row - 1, column)).toString();
+        if (color !== ' ') {
+          newCol.style.backgroundImage = `url("../views/images/${color.toLowerCase()}-token.png")`;
+        }
         rowElement.append(newCol);
       }
     }
@@ -43,6 +51,14 @@ export class BoardView {
       headElement.addEventListener('click', () => {
         callback(columnId);
       });
+    });
+  }
+
+  removeControls() {
+    document.querySelectorAll('th').forEach((headElement, columnId) => {
+      const newTh = document.createElement('th');
+      newTh.id = `${columnId}`;
+      headElement.replaceWith(newTh);
     });
   }
 
@@ -58,10 +74,7 @@ export class BoardView {
     const boardMessage = document.getElementById('boardMessages');
     if (this.#board.isWinner()) {
       const color = this.#board.getColor(
-        new Coordinate(
-          this.#board.getLastDrop().getRow(),
-          this.#board.getLastDrop().getColumn()
-        )
+        new Coordinate(this.#board.getLastDrop().getRow(), this.#board.getLastDrop().getColumn())
       );
       boardMessage.innerHTML = `<b style='color: ${color}'>${color}</b> Has won the game!`;
     } else {
