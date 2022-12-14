@@ -1,59 +1,56 @@
-import { Board } from './Board.js';
-import { Turn } from './Turn.js';
+import { Board } from './Board.js'
+import { Turn } from './Turn.js'
 
 export class Game {
-  #board;
-  #turn;
+    #board
+    #turn
 
-  constructor(board, turn) {
-    this.#board = board;
-    this.#turn = turn;
-  }
+    constructor(numOfPlayers) {
+        this.#board = new Board()
+        this.#turn = new Turn(this.#board, numOfPlayers)
+    }
 
-  getTurn() {
-    return this.#turn;
-  }
+    getColor(coordinate) {
+        return this.#board.getColor(coordinate)
+    }
 
-  getBoard() {
-    return this.#board;
-  }
+    getActivePlayer() {
+        return this.#turn.getActivePlayer()
+    }
 
-  getColor(coordinate) {
-    return this.#board.getColor(coordinate);
-  }
+    next() {
+        this.#turn.next()
+    }
 
-  isComplete() {
-    return this.#board.isComplete();
-  }
+    isComplete() {
+        return this.#board.isComplete()
+    }
 
-  isWinner() {
-    return this.#board.isWinner();
-  }
+    isWinner() {
+        return this.#board.isWinner()
+    }
 
-  isFinished() {
-    return this.#board.isFinished();
-  }
+    isFinished() {
+        return this.#board.isFinished()
+    }
 
-  getActivePlayer() {
-    return this.#turn.getActivePlayer();
-  }
+    getTurn() {
+        return this.#turn
+    }
 
-  next() {
-    this.#turn.next();
-  }
+    getBoard() {
+        return this.#board
+    }
 
-  toPrimitives() {
-    return {
-      turn: this.#turn.toPrimitives(),
-      board: this.#board.toPrimitives(),
-    };
-  }
+    toPrimitives() {
+        return {
+            turn: this.#turn.toPrimitives(),
+            board: this.#board.toPrimitives(),
+        }
+    }
 
-  static fromPrimitives(game) {
-    const board = new Board();
-    return new Game(
-      board.fromPrimitives(game.board),
-      Turn.fromPrimitives(board, game.turn)
-    );
-  }
+    fromPrimitives(game) {
+        this.#board.fromPrimitives(game.board)
+        this.#turn = this.#turn.fromPrimitives(this.#board, game.turn)
+    }
 }

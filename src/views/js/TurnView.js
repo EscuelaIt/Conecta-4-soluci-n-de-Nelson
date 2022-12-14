@@ -1,35 +1,36 @@
+import { Color } from '../../types/Color.js'
+
 export class TurnView {
-  #turn;
-  #column;
+    #turn
 
-  constructor(turn) {
-    this.#turn = turn;
-    this.drawTurnMessage();
-  }
+    constructor(turn) {
+        this.#turn = turn
+        this.#update()
+    }
 
-  drawTurnMessage() {
-    let color = this.#turn.getActivePlayer().getColor().toString();
-    document.getElementById('redTurn').style.opacity = color === 'Red' ? 1 : 0.2;
-    document.getElementById('yellowTurn').style.opacity = color === 'Yellow' ? 1 : 0.2;
-    document.documentElement.style.setProperty(
-      '--th-background-image',
-      `url("../images/${color.toLowerCase()}-token.png")`
-    );
-  }
+    #update() {
+        let activeColor = this.#turn.getActivePlayer().getColor()
+        for (let color of Color.values()) {
+            document.getElementById(color.toString() + `Id`).style.opacity =
+              activeColor.equals(color)
+              ? 1
+              : 0.2
+        }
+    }
 
-  dropToken(column) {
-    this.#column = column
-    this.#turn.getActivePlayer().accept(this);
-    this.#turn.next();
-    this.drawTurnMessage();
-  }
+    dropToken(column) {
+        this.column = column
+        this.#turn.getActivePlayer().accept(this)
+        this.#turn.next()
+        this.#update()
+    }
 
-  visitUserPlayer(userPlayer) {
-    userPlayer.dropToken(this.#column)
-  }
+    visitUserPlayer(userPlayer) {
+        userPlayer.dropToken(this.column)
+        delete this.column
+    }
 
-  visitMachinePlayer(machinePlayer) {
-    machinePlayer.dropToken(machinePlayer.getColumn())
-  }
-
+    visitMachinePlayer(machinePlayer) {
+        machinePlayer.dropToken(machinePlayer.getColumn())
+    }
 }

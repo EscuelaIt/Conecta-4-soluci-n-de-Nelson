@@ -1,112 +1,111 @@
-import { Coordinate } from '../types/Coordinate.js';
-import { Color } from '../types/Color.js';
-import { Line } from './Line.js';
-import { Direction } from '../types/Direction.js';
-import { assert } from '../utils/assert.js';
+import { Coordinate } from '../types/Coordinate.js'
+import { Color } from '../types/Color.js'
+import { Line } from './Line.js'
+import { Direction } from '../types/Direction.js'
+import { assert } from '../utils/assert.js'
 
 export class Board {
-  #colors;
-  #lastDrop;
+    #colors
+    #lastDrop
 
-  constructor() {
-    this.#colors = [];
-    for (let i = 0; i < Coordinate.NUMBER_ROWS; i++) {
-      this.#colors[i] = [];
-      for (let j = 0; j < Coordinate.NUMBER_COLUMNS; j++) {
-        this.#colors[i][j] = Color.NULL;
-      }
-    }
-  }
-
-  dropToken(column, color) {
-    assert(!this.isComplete(column));
-    assert(!this.isWinner());
-    this.#lastDrop = new Coordinate(0, column);
-    while (!this.isEmpty(this.#lastDrop)) {
-      this.#lastDrop = this.#lastDrop.shifted(Direction.NORTH.getCoordinate());
-    }
-    this.#colors[this.#lastDrop.getRow()][this.#lastDrop.getColumn()] = color;
-  }
-
-  isComplete(column) {
-    if (column !== undefined) {
-      return !this.isEmpty(new Coordinate(Coordinate.NUMBER_ROWS - 1, column));
-    }
-    for (let i = 0; i < Coordinate.NUMBER_COLUMNS; i++) {
-      if (!this.isComplete(i)) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  isFinished() {
-    return this.isComplete() || this.isWinner();
-  }
-
-  isWinner() {
-    if (this.#lastDrop === undefined) {
-      return false;
-    }
-    let line = new Line(this.#lastDrop);
-    for (let direction of Direction.values().splice(0, 4)) {
-      line.set(direction);
-      for (let i = 0; i < Line.LENGTH; i++) {
-        if (this.isConnect4(line)) {
-          return true;
+    constructor() {
+        this.#colors = []
+        for (let i = 0; i < Coordinate.NUMBER_ROWS; i++) {
+            this.#colors[i] = []
+            for (let j = 0; j < Coordinate.NUMBER_COLUMNS; j++) {
+                this.#colors[i][j] = Color.NULL
+            }
         }
-        line.shift();
-      }
     }
-    return false;
-  }
 
-  isConnect4(line) {
-    let coordinates = line.getCoordinates();
-    for (let i = 0; i < Line.LENGTH; i++) {
-      if (!coordinates[i].isValid()) {
-        return false;
-      }
-      if (i > 0 && this.getColor(coordinates[i - 1]) !== this.getColor(coordinates[i])) {
-        return false;
-      }
+    dropToken(column, color) {
+        assert(!this.isComplete(column))
+        assert(!this.isWinner())
+        this.#lastDrop = new Coordinate(0, column)
+        while (!this.isEmpty(this.#lastDrop)) {
+            this.#lastDrop = this.#lastDrop.shifted(Direction.NORTH.getCoordinate())
+        }
+        this.#colors[this.#lastDrop.getRow()][this.#lastDrop.getColumn()] = color
     }
-    return true;
-  }
 
-  isOccupied(coordinate, color) {
-    return this.getColor(coordinate) === color;
-  }
+    isComplete(column) {
+        if (column !== undefined) {
+            return !this.isEmpty(new Coordinate(Coordinate.NUMBER_ROWS - 1, column))
+        }
+        for (let i = 0; i < Coordinate.NUMBER_COLUMNS; i++) {
+            if (!this.isComplete(i)) {
+                return false
+            }
+        }
+        return true
+    }
 
-  isEmpty(coordinate) {
-    return this.isOccupied(coordinate, Color.NULL);
-  }
+    isFinished() {
+        return this.isComplete() || this.isWinner()
+    }
 
-  getColor(coordinate) {
-    return this.#colors[coordinate.getRow()][coordinate.getColumn()];
-  }
+    isWinner() {
+        if (this.#lastDrop === undefined) {
+            return false
+        }
+        let line = new Line(this.#lastDrop)
+        for (let direction of Direction.values().splice(0, 4)) {
+            line.set(direction)
+            for (let i = 0; i < Line.LENGTH; i++) {
+                if (this.isConnect4(line)) {
+                    return true
+                }
+                line.shift()
+            }
+        }
+        return false
+    }
 
-  getLastDrop() {
-    return this.#lastDrop;
-  }
+    isConnect4(line) {
+        let coordinates = line.getCoordinates()
+        for (let i = 0; i < Line.LENGTH; i++) {
+            if (!coordinates[i].isValid()) {
+                return false
+            }
+            if (i > 0 && this.getColor(coordinates[i - 1]) !== this.getColor(coordinates[i])) {
+                return false
+            }
+        }
+        return true
+    }
 
-  toPrimitives() {
-    return {
-      colors: this.#colors.map((row) => row.toString()),
-      lastDrop: this.#lastDrop?.toPrimitives(),
-    };
-  }
+    isOccupied(coordinate, color) {
+        return this.getColor(coordinate) === color
+    }
 
-  fromPrimitives(board) {
-    this.#colors = [];
-    board.colors.forEach((row, rowKey) => {
-      this.#colors[rowKey] = [];
-      row.split(',').forEach((color, columnKey) => {
-        this.#colors[rowKey][columnKey] = Color.fromString(color);
-      });
-    });
+    isEmpty(coordinate) {
+        return this.isOccupied(coordinate, Color.NULL)
+    }
 
-    this.#lastDrop = new Coordinate(board.lastDrop.row, board.lastDrop.column);
-    return this;
-  }
+    getColor(coordinate) {
+        return this.#colors[coordinate.getRow()][coordinate.getColumn()]
+    }
+
+    getLastDrop() {
+        return this.#lastDrop
+    }
+
+    toPrimitives() {
+        return {
+            colors: this.#colors.map((row) => row.toString()),
+            lastDrop: this.#lastDrop?.toPrimitives(),
+        }
+    }
+
+    fromPrimitives(board) {
+        this.#colors = []
+        board.colors.forEach((row, rowKey) => {
+            this.#colors[rowKey] = []
+            row.split(',').forEach((color, columnKey) => {
+                this.#colors[rowKey][columnKey] = Color.fromString(color)
+            })
+        })
+
+        this.#lastDrop = new Coordinate(board.lastDrop.row, board.lastDrop.column)
+    }
 }

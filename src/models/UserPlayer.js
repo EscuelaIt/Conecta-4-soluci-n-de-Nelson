@@ -1,11 +1,11 @@
-import { Player } from './Player.js';
+import { Player } from './Player.js'
 
 export class UserPlayer extends Player {
-  constructor(color, board) {
-    super(color, board);
-  }
+    constructor(color, board) {
+        super(color, board)
+    }
 
-  accept(visitor) {
-    visitor.visitUserPlayer(this);
-  }
+    accept(visitor) {
+        visitor.visitUserPlayer(this)
+    }
 }

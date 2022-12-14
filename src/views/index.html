@@ -3,35 +3,25 @@
   <head>
     <meta charset="UTF-8" />
     <title>GameView</title>
-    <link rel="stylesheet" href="css/index.css" />
+    <link rel="stylesheet" href="css/style.css" />
     <script type="module" src="js/GameView.js"></script>
   </head>
   <body>
+  <header id="titleId">
+    <h2>HTML, CSS and Javascript GameView</h2>
+  </header>
     <main class="main">
       <section id="leftPanel" class="leftPanel">
         <h2>Current Turn:</h2>
-        <div class="turnColor">
-          <img id="redTurn" src="./images/red-token.png" alt="" />
-          <img id="yellowTurn" src="./images/yellow-token.png" alt="" />
-        </div>
-        <div id="buttonsContainer"></div>
-        <div id="savedGamesMessage">
-        </div>
-        <div id="savedGames">
-
+        <div id="turnId">
+          <img id="RedId" src="./images/red-token.png" alt="" />
+          <img id="YellowId" src="./images/yellow-token.png" alt="" />
         </div>
       </section>
-
-      <section id="rightPanel" class="rightPanel">
-        <header class="boardTitle">
-          <h1>HTML, CSS and Javascript GameView</h1>
-        </header>
-
-        <section class="boardMessages">
-          <div id="boardMessages"></div>
-        </section>
-
-        <section class="board" id="board"></section>
+      <section id="rightPanel">
+        <article id="messageId"></article>
+        <article id="validationId"></article>
+        <article id="boardId"></article>
       </section>
     </main>
   </body>

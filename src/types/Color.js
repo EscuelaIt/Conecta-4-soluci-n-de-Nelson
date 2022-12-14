@@ -1,35 +1,37 @@
 export class Color {
+    static RED = new Color(`Red`)
+    static YELLOW = new Color(`Yellow`)
+    static NULL = new Color(` `)
+    #string
 
-    static RED = new Color(`Red`);
-    static YELLOW = new Color(`Yellow`);
-    static NULL = new Color(` `);
-    #string;
-
-    constructor(string = ` `) {
-        this.#string = string;
+    constructor(string) {
+        this.#string = string
     }
 
     static values() {
-        return [Color.RED, Color.YELLOW];
+        return [Color.RED, Color.YELLOW]
     }
 
     static get(ordinal) {
-        return Color.values()[ordinal];
+        return Color.values()[ordinal]
+    }
+
+    equals(color) {
+        return this.toString() === color.toString()
     }
 
     toString() {
-        return this.#string;
+        return this.#string
     }
 
-    static fromString(color){
+    static fromString(color) {
         switch (color) {
             case 'Red':
-              return Color.RED;
+                return Color.RED
             case 'Yellow':
-                return Color.YELLOW;
+                return Color.YELLOW
             default:
-                return Color.NULL;
-          }
+                return Color.NULL
+        }
     }
-
 }
