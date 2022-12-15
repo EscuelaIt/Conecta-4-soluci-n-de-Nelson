@@ -12,7 +12,10 @@ export class StorageView {
 
     render(game) {
         if (game) {
-            new StorageDialog(() => this.saveGame(game))
+            new StorageDialog(() => {
+                this.#gameStorage.saveGame(game)
+                this.render()
+            })
         }
         document.getElementById('leftPanel').append(this.#getSavedGames())
     }
@@ -40,22 +43,13 @@ export class StorageView {
         deleteLabel.innerHTML = 'X'
         deleteLabel.onclick = (event) => {
             event.stopPropagation()
-            this.deleteGameById(gameId)
+            this.#gameStorage.deleteGame(gameId)
+            this.render()
         }
         gameElement.append(deleteLabel)
     }
 
-    saveGame(game) {
-        this.#gameStorage.saveGame(game)
-        this.render()
-    }
-
     getGameById(gameId) {
         return this.#gameStorage.getGameById(gameId)
-    }
-
-    deleteGameById(gameId) {
-        this.#gameStorage.deleteGame(gameId)
-        this.render()
     }
 }

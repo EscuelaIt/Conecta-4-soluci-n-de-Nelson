@@ -1,10 +1,15 @@
 @startuml
 
 class GameView {
-  #init()
-  #onUpdate(column)
+-game
+-boardView
+-turnView
+-storageView
+  -init()
+  -onUpdate(column)
   visitUserPlayer() 
   visitMachinePlayer()
+  -loadGame()
 }
 
 GameView ..> NumPlayersDialog
@@ -21,23 +26,29 @@ class ResumeDialog extends ButtonsDialog {
 class ResumeDialog
 
 class BoardView {
+-board
+-messageDialog
   constructor(board)
-  #createTable() 
-  #createRowH(row) 
-  #createRow(row)
+  render()
+  -getRow(row)
   addUpdateListener(onUpdate)
-  update()
+  updateResults()
+  validateColumn(column)
 }
 
  class MessageDialog {
+ -board
+ -article
     constructor(board) 
-    update() 
+    updateResults()
+    updateValidation(column)
 }
 
 
 BoardView ..> MessageDialog
 
 class TurnView {
+-turn
   constructor(turn)
   #update() 
   dropToken(column) 
@@ -46,8 +57,34 @@ class TurnView {
 }
 
 class ButtonsDialog {
-    getButtons()
-    deleteButtons()
+-buttons
+createButtons()
+addButton()
+deleteButtons()
+getButtons()
+}
+
+class StorageView{
+-gameStorage
+-loadGameCallback
+constructor(loadGameCallBack)
+render(game)
+-getSavedGames()
+-createDeleteLabel(gameElement, gameId)
+getGameById(gameId)
+}
+
+StorageView ..> StorageDialog
+
+class GameStorage{
+getAllGamesIds()
+saveGame(game)
+getGameById(gameId)
+deleteGame(gameId)
+}
+
+class StorageDialog extends ButtonsDialog{
+constructor(callback)
 }
 
 package models {
@@ -58,6 +95,9 @@ class RandomMachinePlayer
 class UserPlayer
 class Board
 }
+
+GameView *--down-> StorageView
+StorageView *-down-> GameStorage
 
 GameView -down-> Game
 GameView *-down-> TurnView
