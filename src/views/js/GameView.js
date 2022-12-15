@@ -13,8 +13,8 @@ export class GameView {
     #storageView
 
     constructor() {
-        this.#init()
         this.#storageView = new StorageView(this.#loadGame.bind(this))
+        this.#init()
     }
 
     #init() {
@@ -22,25 +22,25 @@ export class GameView {
             this.#game = new Game(numOfUsersPlayer)
             this.#turnView = new TurnView(this.#game.getTurn())
             this.#boardView = new BoardView(this.#game.getBoard())
-            this.#storageView.setGame(this.#game)
             this.#game.getActivePlayer().accept(this)
         })
+        this.#storageView.render()
     }
 
     #onUpdate(column) {
         assert(!this.#game.isWinner())
         this.#boardView.validateColumn(column)
         this.#turnView.dropToken(column)
-        this.#boardView.update()
+        this.#boardView.render()
+        this.#storageView.render(this.#game)
         if (!this.#game.isFinished()) {
             this.#game.getActivePlayer().accept(this)
         } else {
             this.#boardView.updateResults()
             new ResumeDialog(() => {
                 this.#init()
-                this.#storageView.render()
             })
-            this.#storageView.setGame(null)
+            this.#storageView.render()
         }
     }
 
@@ -63,8 +63,6 @@ export class GameView {
         this.#game.fromPrimitives(this.#storageView.getGameById(gameKey))
         this.#turnView = new TurnView(this.#game.getTurn())
         this.#boardView = new BoardView(this.#game.getBoard())
-        this.#boardView.update()
-        this.#storageView.setGame(this.#game)
         this.#game.getActivePlayer().accept(this)
     }
 }

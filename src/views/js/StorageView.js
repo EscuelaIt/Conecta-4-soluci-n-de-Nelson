@@ -1,7 +1,7 @@
 import { GameStorage } from './GameStorage.js'
+import { StorageDialog } from './StorageDialog.js'
 
 export class StorageView {
-    #game
     #gameStorage = new GameStorage()
     #loadGameCallback
 
@@ -10,41 +10,28 @@ export class StorageView {
         this.render()
     }
 
-    setGame(game) {
-        this.#game = game
-        this.render()
-    }
-
-    render() {
-        document.getElementById('saveGameId')?.remove()
-        const saveGameView = document.createElement('div')
-        saveGameView.id = 'saveGameId'
-
-        if (this.#game) {
-            saveGameView.append(this.#getSaveButton())
+    render(game) {
+        if (game) {
+            new StorageDialog(() => this.saveGame(game))
         }
-        this.#getSavedGameElements().forEach((gameElement) => saveGameView.append(gameElement))
-        document.getElementById('leftPanel').append(saveGameView)
+        document.getElementById('leftPanel').append(this.#getSavedGames())
     }
 
-    #getSaveButton() {
-        const saveButton = document.createElement('button')
-        saveButton.innerText = 'Save Game!'
-        saveButton.onclick = () => this.saveGame(this.#game)
-        return saveButton
-    }
-
-    #getSavedGameElements() {
-        return this.#gameStorage.getAllGamesIds().map((gameId) => {
+    #getSavedGames() {
+        document.getElementById('savedGamesId')?.remove()
+        const savedGamesDiv = document.createElement('div')
+        savedGamesDiv.id = 'savedGamesId'
+        this.#gameStorage.getAllGamesIds().forEach((gameId) => {
             const gameElement = document.createElement('div')
             const date = new Date(parseInt(gameId))
-            gameElement.innerHTML = `${date.getDate()}/${
+            gameElement.innerHTML = `Game saved: ${date.getDate()}/${
                 date.getMonth() + 1
             }/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
             this.#createDeleteLabel(gameElement, gameId)
             gameElement.onclick = () => this.#loadGameCallback(gameId)
-            return gameElement
+            savedGamesDiv.append(gameElement)
         })
+        return savedGamesDiv
     }
 
     #createDeleteLabel(gameElement, gameId) {

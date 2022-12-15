@@ -23,15 +23,4 @@ export class Color {
     toString() {
         return this.#string
     }
-
-    static fromString(color) {
-        switch (color) {
-            case 'Red':
-                return Color.RED
-            case 'Yellow':
-                return Color.YELLOW
-            default:
-                return Color.NULL
-        }
-    }
 }

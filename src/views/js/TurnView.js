@@ -12,10 +12,12 @@ export class TurnView {
         let activeColor = this.#turn.getActivePlayer().getColor()
         for (let color of Color.values()) {
             document.getElementById(color.toString() + `Id`).style.opacity =
-              activeColor.equals(color)
-              ? 1
-              : 0.2
+                activeColor.equals(color) ? 1 : 0.2
         }
+        document.documentElement.style.setProperty(
+            '--turn-token-image',
+            `url("../images/${activeColor.toString().toLowerCase()}-token.png")`
+        )
     }
 
     dropToken(column) {

@@ -4,7 +4,7 @@
 }
 
 :root {
-  --th-background-image: url('../images/red-token.png');
+  --turn-token-image: url('../images/red-token.png');
 }
 
 body {
@@ -78,8 +78,8 @@ button {
 #boardId table {
   margin: auto;
   background: aqua;
-  width: 400px;
-  height: 400px;
+  width: 380px;
+  height: 340px;
   border-collapse: separate;
   border-spacing: 10px;
   border-radius: 10px;
@@ -94,7 +94,7 @@ button {
   box-shadow: 2px 1px 1px 1px black inset;
 }
 
-#boardId table > tr > th {
+#boardId table > #controls > td {
   background-color: #0c1621;
   cursor: pointer;
   border-radius: 100%;
@@ -103,37 +103,35 @@ button {
   box-shadow: 2px 1px 1px 1px black inset;
 }
 
-#boardId table > tr > th:hover {
-  background: var(--th-background-image);
+#boardId table > #controls > td:hover {
+  background: var(--turn-token-image);
 }
 
-#saveGameId{
+#savedGamesId{
   text-align: center;
 }
 
-#saveGameId div{
+#savedGamesId div{
   display: flex;
   align-items: center;
-  justify-content: space-between;
   font-size: small;
   padding: 10px;
   cursor: pointer;
   position: relative;
-  text-align: justify;
 }
 
-#saveGameId div:hover{
+#savedGamesId div:hover{
   background: #0c1621;
   transition-duration: 400ms;
   transition-property: background-color;
 }
 
-#saveGameId div #delete{
+#savedGamesId div #delete{
   border-radius: 5px;
   background: coral;
   padding: 5px;
 }
 
-#saveGameId div #delete:hover{
+#savedGamesId div #delete:hover{
   background: red;
 }

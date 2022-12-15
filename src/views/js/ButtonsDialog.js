@@ -2,6 +2,7 @@ export class ButtonsDialog {
     #buttons
 
     createButtons() {
+        this.deleteButtons()
         this.#buttons = document.createElement('div')
         this.#buttons.id = 'buttonsId'
         document.getElementById('leftPanel').append(this.#buttons)
@@ -18,7 +19,7 @@ export class ButtonsDialog {
     }
 
     deleteButtons() {
-        document.getElementById('buttonsId').remove()
+        document.getElementById('buttonsId')?.remove()
     }
 
     getButtons() {

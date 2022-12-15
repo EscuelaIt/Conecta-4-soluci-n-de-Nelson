@@ -75,7 +75,7 @@ export class Board {
     }
 
     isOccupied(coordinate, color) {
-        return this.getColor(coordinate) === color
+        return this.getColor(coordinate).toString() === color.toString()
     }
 
     isEmpty(coordinate) {
@@ -102,7 +102,7 @@ export class Board {
         board.colors.forEach((row, rowKey) => {
             this.#colors[rowKey] = []
             row.split(',').forEach((color, columnKey) => {
-                this.#colors[rowKey][columnKey] = Color.fromString(color)
+                this.#colors[rowKey][columnKey] = new Color(color);
             })
         })
 
